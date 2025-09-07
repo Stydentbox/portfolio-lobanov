@@ -1,0 +1,320 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="Контактная информация преподавателя информатики Лобанова А.Н.">
+    <title>Контакты - Портфолио Лобанов А.Н.</title>
+    <link rel="icon" type="image/x-icon" href="Images/favicon.ico">
+    <link rel="icon" type="image/png" sizes="32x32" href="Images/favicon-32x32.png">
+    <link rel="icon" type="image/png" sizes="16x16" href="Images/favicon-16x16.png">
+    <link rel="apple-touch-icon" sizes="180x180" href="Images/apple-touch-icon.png">
+    <link rel="icon" type="image/png" sizes="192x192" href="Images/android-chrome-192x192.png">
+    <link rel="icon" type="image/png" sizes="512x512" href="Images/android-chrome-512x512.png">
+    <link rel="manifest" href="Images/site.webmanifest">
+    <link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+    <header>
+        <div class="container">
+            <div class="header-content">
+                <a href="index.html" class="logo">
+                    <img src="Images/favicon-32x32.png" alt="Лобанов А.Н." class="logo-icon">
+                </a>
+                <nav>
+                    <ul>
+                        <li><a href="index.html">Главная</a></li>
+                        <li><a href="achievements.html">Достижения</a></li>
+                        <li><a href="education.html">Образование</a></li>
+                        <li><a href="publications.html">Публикации</a></li>
+                        <li><a href="contact.html" class="active">Контакты</a></li>
+                    </ul>
+                </nav>
+            </div>
+        </div>
+    </header>
+
+    <main>
+        <div class="container">
+            <section id="page-header">
+                <h1>Контактная информация</h1>
+                <div class="card">
+                    <p>Для связи по вопросам сотрудничества, консультаций по методике преподавания информатики, участия в научных проектах или обмена педагогическим опытом.</p>
+                </div>
+            </section>
+
+            <section id="contact-info">
+                <h2>Основная информация</h2>
+                
+                <div class="cards-grid">
+                    <div class="card">
+                        <h3 class="card-title">👤 Личные данные</h3>
+                        <p><strong>ФИО:</strong> Лобанов Альберт Николаевич</p>
+                        <p><strong>Должность:</strong> Преподаватель информатики</p>
+                        <p><strong>Специализация:</strong> STEAM-образование, олимпиадная подготовка, ИИ-проекты</p>
+                    </div>
+                    
+                    <div class="card">
+                        <h3 class="card-title">🏫 Место работы</h3>
+                        <p><strong>Организация:</strong> Лицей имени Н. Милеску Спэтару</p>
+                        <p><strong>Город:</strong> Кишинэу, Республика Молдова</p>
+                        <p><strong>Кафедра:</strong> Кафедра точных наук</p>
+                    </div>
+                    
+                    <div class="card">
+                        <h3 class="card-title">🌐 Профессиональные профили</h3>
+                        <p><strong>Stepik:</strong><br>
+                        <a href="https://stepik.org/users/15412179/profile" target="_blank">Профиль</a><br>
+                        <a href="https://stepik.org/users/15412179/certificates" target="_blank">Сертификаты</a></p>
+                        <p><strong>HTML Academy:</strong><br>
+                        <a href="https://htmlacademy.ru/profile/id171113" target="_blank">Профиль</a></p>
+                    </div>
+                </div>
+            </section>
+
+            <section id="contact-form-section">
+                <h2>Форма обратной связи</h2>
+                
+                <div class="contact-form">
+                    <form id="contactForm" onsubmit="handleSubmit(event)">
+                        <div class="form-group">
+                            <label for="name">Ваше имя *</label>
+                            <input type="text" id="name" name="name" required>
+                        </div>
+                        
+                        <div class="form-group">
+                            <label for="email">Ваш email *</label>
+                            <input type="email" id="email" name="email" required>
+                        </div>
+                        
+                        <div class="form-group">
+                            <label for="subject">Тема сообщения</label>
+                            <select id="subject" name="subject">
+                                <option value="collaboration">Сотрудничество</option>
+                                <option value="consultation">Консультация</option>
+                                <option value="methodology">Методика преподавания</option>
+                                <option value="research">Научная деятельность</option>
+                                <option value="projects">Совместные проекты</option>
+                                <option value="other">Другое</option>
+                            </select>
+                        </div>
+                        
+                        <div class="form-group">
+                            <label for="organization">Организация (необязательно)</label>
+                            <input type="text" id="organization" name="organization">
+                        </div>
+                        
+                        <div class="form-group">
+                            <label for="message">Сообщение *</label>
+                            <textarea id="message" name="message" placeholder="Опишите цель обращения, интересующие вас вопросы или предложения по сотрудничеству..." required></textarea>
+                        </div>
+                        
+                        <!-- Honeypot поле для защиты от спама -->
+                        <div style="display: none;">
+                            <input type="text" name="honeypot" tabindex="-1" autocomplete="off">
+                        </div>
+                        
+                        <div class="form-group">
+                            <button type="submit" class="btn" id="submitBtn">
+                                <span id="buttonText">Отправить сообщение</span>
+                                <span id="spinner" style="display: none;">⏳ Отправка...</span>
+                            </button>
+                        </div>
+                    </form>
+                    
+                    <div id="messageStatus" style="display: none; margin-top: 1rem; padding: 1rem; border-radius: var(--border-radius);">
+                        <div id="successMessage" style="display: none; color: var(--success-color);">
+                            ✅ Сообщение успешно отправлено! Я отвечу вам в ближайшее время.
+                        </div>
+                        <div id="errorMessage" style="display: none; color: var(--error-color);">
+                            ❌ Произошла ошибка при отправке. Пожалуйста, попробуйте ещё раз или свяжитесь по email.
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <section id="collaboration-areas">
+                <h2>Области сотрудничества</h2>
+                
+                <div class="timeline">
+                    <div class="timeline-item">
+                        <div class="timeline-date">Образование</div>
+                        <div class="timeline-content">
+                            <h3>Методика преподавания</h3>
+                            <p>Консультации по внедрению STEAM-подходов, разработка междисциплинарных программ, обмен опытом в области IT-образования.</p>
+                        </div>
+                    </div>
+
+                    <div class="timeline-item">
+                        <div class="timeline-date">Олимпиады</div>
+                        <div class="timeline-content">
+                            <h3>Подготовка к конкурсам</h3>
+                            <p>Методики подготовки к олимпиадам по информатике, организация тренировочных сессий, разработка задач и тестов.</p>
+                        </div>
+                    </div>
+
+                    <div class="timeline-item">
+                        <div class="timeline-date">Исследования</div>
+                        <div class="timeline-content">
+                            <h3>Научная деятельность</h3>
+                            <p>Совместные исследования в области облачных технологий, ИИ в образовании, участие в конференциях и публикациях.</p>
+                        </div>
+                    </div>
+
+                    <div class="timeline-item">
+                        <div class="timeline-date">Проекты</div>
+                        <div class="timeline-content">
+                            <h3>IT-проекты и стартапы</h3>
+                            <p>Разработка образовательных приложений, консультации по техническим решениям, менторство для молодых разработчиков.</p>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+
+            <section id="actions">
+                <div class="buttons-group">
+                    <button class="btn" onclick="copyEmail('albert.lobanov@gmail.com')">Скопировать email</button>
+                    <a href="#" class="btn-outline btn">Скачать vCard</a>
+                    <a href="index.html" class="btn-outline btn">На главную</a>
+                    <a href="publications.html" class="btn-outline btn">Публикации</a>
+                </div>
+            </section>
+        </div>
+    </main>
+
+    <footer>
+        <div class="container">
+            <div class="footer-content">
+                <p>&copy; 2025 Лобанов Альберт Николаевич</p>
+                <p>
+                    <a href="https://stepik.org/users/15412179/certificates" target="_blank">Портфолио сертификатов Stepik</a>
+                </p>
+            </div>
+        </div>
+    </footer>
+
+    <button class="back-to-top" onclick="scrollToTop()" title="Наверх">↑</button>
+
+    <script>
+        // Обработка формы
+        function handleSubmit(event) {
+            event.preventDefault();
+            
+            const submitBtn = document.getElementById('submitBtn');
+            const buttonText = document.getElementById('buttonText');
+            const spinner = document.getElementById('spinner');
+            const messageStatus = document.getElementById('messageStatus');
+            const successMessage = document.getElementById('successMessage');
+            const errorMessage = document.getElementById('errorMessage');
+            
+            // Проверка honeypot поля
+            if (event.target.honeypot.value !== '') {
+                return; // Скорее всего спам
+            }
+            
+            // Показываем спиннер
+            buttonText.style.display = 'none';
+            spinner.style.display = 'inline';
+            submitBtn.disabled = true;
+            
+            // Имитация отправки (в реальном проекте здесь был бы fetch к API)
+            setTimeout(() => {
+                // Восстанавливаем кнопку
+                buttonText.style.display = 'inline';
+                spinner.style.display = 'none';
+                submitBtn.disabled = false;
+                
+                // Показываем сообщение об успехе
+                messageStatus.style.display = 'block';
+                successMessage.style.display = 'block';
+                errorMessage.style.display = 'none';
+                messageStatus.style.backgroundColor = 'rgba(76, 175, 80, 0.1)';
+                messageStatus.style.border = '1px solid var(--success-color)';
+                
+                // Очищаем форму
+                document.getElementById('contactForm').reset();
+                
+                // Скрываем сообщение через 5 секунд
+                setTimeout(() => {
+                    messageStatus.style.display = 'none';
+                }, 5000);
+                
+            }, 2000); // Имитация 2-секундной отправки
+        }
+        
+        // Копирование email
+        function copyEmail(email) {
+            navigator.clipboard.writeText(email).then(() => {
+                // Временно изменяем текст кнопки
+                const btn = event.target;
+                const originalText = btn.textContent;
+                btn.textContent = '✅ Скопировано!';
+                btn.style.backgroundColor = 'var(--success-color)';
+                
+                setTimeout(() => {
+                    btn.textContent = originalText;
+                    btn.style.backgroundColor = '';
+                }, 2000);
+            }).catch(() => {
+                alert('Email: ' + email);
+            });
+        }
+        
+        // Базовые функции навигации и скролла
+        window.addEventListener('scroll', function() {
+            const backToTop = document.querySelector('.back-to-top');
+            if (window.pageYOffset > 300) {
+                backToTop.classList.add('visible');
+            } else {
+                backToTop.classList.remove('visible');
+            }
+        });
+
+        function scrollToTop() {
+            window.scrollTo({
+                top: 0,
+                behavior: 'smooth'
+            });
+        }
+
+        // Активная ссылка в навигации
+        document.addEventListener('DOMContentLoaded', function() {
+            const currentPage = window.location.pathname.split('/').pop() || 'index.html';
+            const navLinks = document.querySelectorAll('nav a');
+            
+            navLinks.forEach(link => {
+                link.classList.remove('active');
+                if (link.getAttribute('href') === currentPage) {
+                    link.classList.add('active');
+                }
+            });
+        });
+    </script>
+
+    <style>
+        select {
+            width: 100%;
+            padding: 0.75rem;
+            background-color: var(--surface-color);
+            color: var(--text-primary);
+            border: 1px solid var(--border-color);
+            border-radius: var(--border-radius);
+            font-family: inherit;
+            font-size: 1rem;
+        }
+
+        select:focus {
+            outline: none;
+            border-color: var(--accent-color);
+            box-shadow: 0 0 0 2px rgba(74, 144, 226, 0.2);
+        }
+
+        @media (max-width: 768px) {
+            .contact-form {
+                margin: 1rem 0;
+            }
+        }
+    </style>
+</body>
+</html>
