@@ -1,0 +1,114 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="Галерея событий и проектов - Портфолио Лобанова А.Н.">
+    <title>Галерея - Портфолио Лобанов А.Н.</title>
+    <link rel="icon" type="image/x-icon" href="Images/favicon.ico">
+    <link rel="icon" type="image/png" sizes="32x32" href="Images/favicon-32x32.png">
+    <link rel="icon" type="image/png" sizes="16x16" href="Images/favicon-16x16.png">
+    <link rel="apple-touch-icon" sizes="180x180" href="Images/apple-touch-icon.png">
+    <link rel="stylesheet" href="css/style.css">
+    <link rel="stylesheet" href="css/gallery.css">
+</head>
+<body>
+    <button id="theme-toggle" class="theme-toggle" title="Кликните для переключения темы">☀️</button>
+
+    <header>
+        <div class="container">
+            <div class="header-content">
+                <a href="#" class="logo">
+                    <img src="Images/favicon-32x32.png" alt="Лобанов А.Н." class="logo-icon">
+                </a>
+                <nav>
+                    <ul>
+                        <li><a href="index.html">Главная</a></li>
+                        <li><a href="achievements.html">Достижения</a></li>
+                        <li><a href="education.html">Образование</a></li>
+                        <li><a href="publications.html">Публикации</a></li>
+                        <li><a href="gallery.html" class="active">Галерея</a></li>
+                        <li><a href="contact.html">Контакты</a></li>
+                    </ul>
+                </nav>
+            </div>
+        </div>
+    </header>
+
+    <main>
+        <div class="container">
+            <section id="gallery-section">
+                <h1>Галерея событий и проектов</h1>
+                <p class="gallery-subtitle">События, мероприятия и проекты со студентами</p>
+
+                <!-- Галерея с сеткой -->
+                <div id="gallery-grid" class="gallery-grid">
+                    <!-- Изображения будут загружены через JavaScript -->
+                </div>
+            </section>
+        </div>
+    </main>
+
+    <!-- Модальное окно для просмотра изображений -->
+    <div id="gallery-modal" class="gallery-modal">
+        <div class="modal-content">
+            <button class="modal-close" title="Закрыть">&times;</button>
+            <button class="modal-prev" title="Предыдущее изображение">&#10094;</button>
+            <img id="modal-image" src="" alt="" class="modal-image">
+            <button class="modal-next" title="Следующее изображение">&#10095;</button>
+            <div class="modal-caption">
+                <p id="modal-title"></p>
+                <p id="modal-counter"></p>
+            </div>
+        </div>
+    </div>
+
+    <footer>
+        <div class="container">
+            <div class="footer-content">
+                <p>&copy; 2025 Лобанов Альберт Николаевич</p>
+                <p>
+                    <a href="https://stepik.org/users/15412179/certificates" target="_blank">Портфолио сертификатов Stepik</a>
+                </p>
+            </div>
+        </div>
+    </footer>
+
+    <button class="back-to-top" onclick="scrollToTop()" title="Наверх">↑</button>
+
+    <script src="js/theme.js"></script>
+    <script src="js/progress-bar.js"></script>
+    <script src="js/gallery.js"></script>
+    <script>
+        // Активная ссылка в навигации
+        document.addEventListener('DOMContentLoaded', function() {
+            const currentPage = window.location.pathname.split('/').pop() || 'index.html';
+            const navLinks = document.querySelectorAll('nav a');
+
+            navLinks.forEach(link => {
+                link.classList.remove('active');
+                if (link.getAttribute('href') === currentPage) {
+                    link.classList.add('active');
+                }
+            });
+        });
+
+        // Кнопка наверх
+        window.addEventListener('scroll', function() {
+            const backToTop = document.querySelector('.back-to-top');
+            if (window.pageYOffset > 300) {
+                backToTop.classList.add('visible');
+            } else {
+                backToTop.classList.remove('visible');
+            }
+        });
+
+        function scrollToTop() {
+            window.scrollTo({
+                top: 0,
+                behavior: 'smooth'
+            });
+        }
+    </script>
+</body>
+</html>
