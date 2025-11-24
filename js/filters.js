@@ -1,57 +1,34 @@
 ﻿// Поиск и фильтрация публикаций
-class PublicationFilter {
-    constructor() {
-        this.searchInput = document.getElementById('publication-search');
-        this.publications = document.querySelectorAll('.publication');
-        this.init();
-    }
+document.addEventListener('DOMContentLoaded', function() {
+    const searchInput = document.getElementById('publication-search');
+    if (!searchInput) return;
 
-    init() {
-        if (\!this.searchInput) return;
+    searchInput.addEventListener('input', function(e) {
+        const searchTerm = e.target.value.toLowerCase().trim();
+        const publications = document.querySelectorAll('.publication');
+        let visibleCount = 0;
 
-        this.searchInput.addEventListener('input', (e) => this.filterPublications(e.target.value));
-    }
-
-    filterPublications(query) {
-        const searchTerm = query.toLowerCase().trim();
-
-        this.publications.forEach(pub => {
+        publications.forEach(pub => {
             const text = pub.textContent.toLowerCase();
-            const matches = text.includes(searchTerm);
+            const matches = text.includes(searchTerm) || searchTerm === '';
 
-            pub.style.display = matches ? 'block' : 'none';
-            if (matches && searchTerm) {
+            if (matches) {
+                pub.style.display = 'block';
                 pub.style.opacity = '1';
-                pub.style.animation = 'fadeIn 0.3s ease';
+                visibleCount++;
+            } else {
+                pub.style.display = 'none';
             }
         });
 
-        this.updateResultsMessage(searchTerm);
-    }
-
-    updateResultsMessage(query) {
-        let resultsDiv = document.getElementById('search-results');
-        if (\!resultsDiv) {
-            resultsDiv = document.createElement('div');
-            resultsDiv.id = 'search-results';
-            this.searchInput.parentNode.appendChild(resultsDiv);
+        // Обновляем сообщение о результатах
+        const searchResults = document.getElementById('search-results');
+        if (searchTerm) {
+            searchResults.textContent = visibleCount === 0
+                ? 'Публикации не найдены'
+                : 'Найдено: ' + visibleCount;
+        } else {
+            searchResults.textContent = '';
         }
-
-        if (\!query) {
-            resultsDiv.textContent = '';
-            return;
-        }
-
-        const visibleCount = Array.from(this.publications).filter(pub => 
-            pub.style.display \!== 'none'
-        ).length;
-
-        resultsDiv.textContent = visibleCount === 0 
-            ? 'Публикации не найдены' 
-            : 'Найдено: ' + visibleCount;
-    }
-}
-
-document.addEventListener('DOMContentLoaded', () => {
-    new PublicationFilter();
+    });
 });
