@@ -15,6 +15,8 @@
     <link rel="stylesheet" href="css/style.css">
 </head>
 <body>
+    <button id="theme-toggle" class="theme-toggle" title="Кликните для переключения темы">☀️</button>
+
     <header>
         <div class="container">
             <div class="header-content">
@@ -27,6 +29,7 @@
                         <li><a href="achievements.html" class="active">Достижения</a></li>
                         <li><a href="education.html">Образование</a></li>
                         <li><a href="publications.html">Публикации</a></li>
+                        <li><a href="gallery.html">Галерея</a></li>
                         <li><a href="contact.html">Контакты</a></li>
                     </ul>
                 </nav>
@@ -249,6 +252,14 @@
 
     <button class="back-to-top" onclick="scrollToTop()" title="Наверх">↑</button>
 
+    <!-- Модальное окно для полного размера изображения -->
+    <div id="image-modal" class="image-modal">
+        <div class="image-modal-content">
+            <button class="image-modal-close" onclick="closeImageModal()">&times;</button>
+            <img id="modal-image" src="" alt="">
+        </div>
+    </div>
+
     <script>
         // Минимальный JS для кнопки "наверх" и навигации
         window.addEventListener('scroll', function() {
@@ -271,13 +282,61 @@
         document.addEventListener('DOMContentLoaded', function() {
             const currentPage = window.location.pathname.split('/').pop() || 'index.html';
             const navLinks = document.querySelectorAll('nav a');
-            
+
             navLinks.forEach(link => {
                 link.classList.remove('active');
                 if (link.getAttribute('href') === currentPage) {
                     link.classList.add('active');
                 }
             });
+
+            // Инициализация функциональности открытия изображений
+            initImageModal();
+        });
+
+        // Функциональность модального окна для изображений
+        function initImageModal() {
+            const images = document.querySelectorAll('.achievement-image');
+            images.forEach(img => {
+                if (img.src && img.src.includes('Images')) {
+                    img.classList.add('clickable');
+                    img.addEventListener('click', function() {
+                        openImageModal(this.src);
+                    });
+                }
+            });
+        }
+
+        function openImageModal(src) {
+            const modal = document.getElementById('image-modal');
+            const modalImage = document.getElementById('modal-image');
+            modalImage.src = src;
+            modal.classList.add('active');
+            document.body.style.overflow = 'hidden';
+        }
+
+        function closeImageModal() {
+            const modal = document.getElementById('image-modal');
+            modal.classList.remove('active');
+            document.body.style.overflow = 'auto';
+        }
+
+        // Закрытие модального окна при клике на фон
+        document.addEventListener('click', function(event) {
+            const modal = document.getElementById('image-modal');
+            if (event.target === modal) {
+                closeImageModal();
+            }
+        });
+
+        // Закрытие при нажатии Escape
+        document.addEventListener('keydown', function(event) {
+            if (event.key === 'Escape') {
+                const modal = document.getElementById('image-modal');
+                if (modal.classList.contains('active')) {
+                    closeImageModal();
+                }
+            }
         });
     </script>
 
@@ -308,14 +367,96 @@
         .achievement-photo {
             margin: 1rem 0;
             text-align: center;
+            position: relative;
         }
 
         .achievement-image {
             max-width: 100%;
-            height: auto;
+            height: 400px;
+            object-fit: cover;
+            object-position: center;
             border-radius: 8px;
             box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
             border: 1px solid var(--border-color, #404040);
+            cursor: pointer;
+            transition: opacity 0.3s ease;
+        }
+
+        .achievement-image:hover {
+            opacity: 0.9;
+        }
+
+        .achievement-image.clickable::after {
+            content: '🔍';
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            font-size: 2rem;
+            opacity: 0;
+            transition: opacity 0.3s ease;
+        }
+
+        .achievement-image:hover.clickable::after {
+            opacity: 1;
+        }
+
+        /* Модальное окно для полного размера */
+        .image-modal {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background-color: rgba(0, 0, 0, 0.9);
+            z-index: 999;
+            align-items: center;
+            justify-content: center;
+            padding: 20px;
+        }
+
+        .image-modal.active {
+            display: flex;
+        }
+
+        .image-modal-content {
+            position: relative;
+            width: 100%;
+            height: 100%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .image-modal img {
+            max-width: 95%;
+            max-height: 95%;
+            object-fit: contain;
+            border-radius: 8px;
+        }
+
+        .image-modal-close {
+            position: absolute;
+            top: 20px;
+            right: 30px;
+            color: white;
+            font-size: 2rem;
+            cursor: pointer;
+            background: none;
+            border: none;
+            padding: 0;
+            width: 40px;
+            height: 40px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: color 0.3s ease;
+            z-index: 1000;
+        }
+
+        .image-modal-close:hover {
+            color: var(--accent-color, #4a90e2);
         }
 
         @media (max-width: 768px) {
@@ -323,7 +464,71 @@
                 flex-direction: column;
                 gap: 0.5rem;
             }
+
+            .achievement-image {
+                height: 300px;
+            }
+
+            .image-modal-close {
+                top: 10px;
+                right: 10px;
+                font-size: 1.5rem;
+                width: 35px;
+                height: 35px;
+            }
+        }
+
+        @media (max-width: 480px) {
+            .achievement-image {
+                height: 250px;
+            }
+
+            .image-modal {
+                padding: 10px;
+            }
+
+            .image-modal img {
+                max-width: 100%;
+                max-height: 100%;
+            }
         }
     </style>
+
+    <script src="js/theme.js"></script>
+    <script src="js/progress-bar.js"></script>
+
+    <script>
+        // Активная ссылка в навигации
+        document.addEventListener('DOMContentLoaded', function() {
+            const currentPage = window.location.pathname.split('/').pop() || 'index.html';
+            const navLinks = document.querySelectorAll('nav a');
+
+            navLinks.forEach(link => {
+                link.classList.remove('active');
+                if (link.getAttribute('href') === currentPage) {
+                    link.classList.add('active');
+                }
+            });
+        });
+
+        // Кнопка наверх
+        window.addEventListener('scroll', function() {
+            const backToTop = document.querySelector('.back-to-top');
+            if (backToTop) {
+                if (window.pageYOffset > 300) {
+                    backToTop.classList.add('visible');
+                } else {
+                    backToTop.classList.remove('visible');
+                }
+            }
+        });
+
+        function scrollToTop() {
+            window.scrollTo({
+                top: 0,
+                behavior: 'smooth'
+            });
+        }
+    </script>
 </body>
 </html>
