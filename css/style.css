@@ -878,3 +878,108 @@ mark {
 [data-theme="light"] .progress-bar {
   background: linear-gradient(90deg, #2563eb, #3b82f6);
 }
+
+/* Стили для логотипов учебных заведений */
+.education-layout {
+  display: grid;
+  grid-template-columns: 100px 1fr;
+  gap: 2rem;
+  align-items: start;
+  margin-bottom: 2rem;
+  padding: 1.5rem;
+  background-color: var(--surface-color);
+  border: 1px solid var(--border-color);
+  border-radius: 8px;
+}
+
+.education-logo-container {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 100px;
+  height: 100px;
+  background-color: var(--bg-color);
+  border: 1px solid var(--border-color);
+  border-radius: 8px;
+  padding: 0.5rem;
+}
+
+.education-logo {
+  max-width: 90%;
+  max-height: 90%;
+  object-fit: contain;
+  display: block;
+}
+
+.education-logo-emoji {
+  font-size: 3rem;
+  line-height: 1;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.education-content {
+  grid-column: 2;
+}
+
+.education-header {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+  margin-bottom: 0.75rem;
+}
+
+.education-header h3 {
+  margin: 0;
+  font-size: 1.3rem;
+}
+
+.education-date {
+  color: var(--accent-color);
+  font-weight: bold;
+  font-size: 0.95rem;
+  margin-bottom: 0.5rem;
+}
+
+/* Адаптивный дизайн для логотипов */
+@media (max-width: 768px) {
+  .education-layout {
+    grid-template-columns: 80px 1fr;
+    gap: 1rem;
+  }
+
+  .education-logo-container {
+    width: 80px;
+    height: 80px;
+  }
+
+  .education-logo-emoji {
+    font-size: 2rem;
+  }
+
+  .education-header h3 {
+    font-size: 1.1rem;
+  }
+}
+
+@media (max-width: 480px) {
+  .education-layout {
+    grid-template-columns: 1fr;
+    gap: 1rem;
+  }
+
+  .education-logo-container {
+    width: 100%;
+    max-width: 100px;
+    margin: 0 auto;
+  }
+
+  .education-content {
+    grid-column: 1;
+  }
+
+  .education-header h3 {
+    font-size: 1rem;
+  }
+}
