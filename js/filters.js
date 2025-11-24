@@ -18,8 +18,8 @@ class PublicationFilter {
         this.publications.forEach(pub => {
             const text = pub.textContent.toLowerCase();
             const matches = text.includes(searchTerm);
-            
-            pub.style.display = matches ? 'flex' : 'none';
+
+            pub.style.display = matches ? 'block' : 'none';
             if (matches && searchTerm) {
                 pub.style.opacity = '1';
                 pub.style.animation = 'fadeIn 0.3s ease';
