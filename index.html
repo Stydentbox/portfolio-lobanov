@@ -15,6 +15,8 @@
     <link rel="stylesheet" href="css/style.css">
 </head>
 <body>
+    <button id="theme-toggle" class="theme-toggle" title="Кликните для переключения темы">☀️</button>
+
     <header>
         <div class="container">
             <div class="header-content">
@@ -27,6 +29,7 @@
                         <li><a href="achievements.html">Достижения</a></li>
                         <li><a href="education.html">Образование</a></li>
                         <li><a href="publications.html">Публикации</a></li>
+                        <li><a href="gallery.html">Галерея</a></li>
                         <li><a href="contact.html">Контакты</a></li>
                     </ul>
                 </nav>
@@ -88,80 +91,13 @@
                 </div>
             </section>
 
-            <section id="recent-achievements">
-                <h2>Достижения учеников</h2>
-                <div class="timeline">
-                    <div class="timeline-item">
-                        <div class="timeline-date">2025</div>
-                        <div class="timeline-content">
-                            <h3>Intel® AI Global Impact Festival</h3>
-                            <p><strong>1 место в мировом рейтинге</strong> - Республика Молдова обошла 109 команд из 33 стран. Учащиеся Анастасия Бэтрынча (11 А) и Даниил Возный (10 А) с проектом EDU-RAG</p>
-                            <div class="badge international">🌍 Международный</div>
-                        </div>
-                    </div>
-
-                    <div class="timeline-item">
-                        <div class="timeline-date">2025</div>
-                        <div class="timeline-content">
-                            <h3>Республиканская олимпиада по информатике</h3>
-                            <p><strong>2 место</strong> - продолжение серии успешных выступлений на республиканском уровне</p>
-                            <div class="badge national">🇲🇩 Республика</div>
-                        </div>
-                    </div>
-
-                    <div class="timeline-item">
-                        <div class="timeline-date">2024</div>
-                        <div class="timeline-content">
-                            <h3>Intel® AI Global Impact Festival</h3>
-                            <p><strong>1 место</strong> в номинации «Страна/регион» - проект по искусственному интеллекту</p>
-                            <div class="badge international">🌍 Международный</div>
-                        </div>
-                    </div>
-
-                    <div class="timeline-item">
-                        <div class="timeline-date">2024</div>
-                        <div class="timeline-content">
-                            <h3>Республиканская олимпиада по информатике</h3>
-                            <p><strong>2 место</strong> - высокие результаты на национальном уровне</p>
-                            <div class="badge national">🇲🇩 Республика</div>
-                        </div>
-                    </div>
-
-                    <div class="timeline-item">
-                        <div class="timeline-date">2024</div>
-                        <div class="timeline-content">
-                            <h3>Tekwill Junior Ambassadors</h3>
-                            <p><strong>Дважды 2 место, дважды 3 место</strong> - стабильно высокие результаты</p>
-                            <div class="badge national">🇲🇩 Национальный</div>
-                        </div>
-                    </div>
-
-                    <div class="timeline-item">
-                        <div class="timeline-date">2023</div>
-                        <div class="timeline-content">
-                            <h3>Республиканская олимпиада по информатике</h3>
-                            <p><strong>2 место</strong> - подтверждение стабильно высокого уровня подготовки</p>
-                            <div class="badge national">🇲🇩 Республика</div>
-                        </div>
-                    </div>
-
-                    <div class="timeline-item">
-                        <div class="timeline-date">2022</div>
-                        <div class="timeline-content">
-                            <h3>Республиканская олимпиада по информатике</h3>
-                            <p><strong>1 место</strong> - выдающийся результат на высшем республиканском уровне</p>
-                            <div class="badge national">🇲🇩 Республика</div>
-                        </div>
-                    </div>
-                </div>
-            </section>
-
-            <section id="actions">
+<section id="actions">
                 <h2>Документы и материалы</h2>
                 <div class="buttons-group">
                     <a href="#" class="btn">Скачать CV (PDF)</a>
                     <a href="achievements.html" class="btn-outline btn">Все достижения</a>
                     <a href="publications.html" class="btn-outline btn">Публикации</a>
+                    <a href="gallery.html" class="btn-outline btn">Галерея</a>
                     <a href="contact.html" class="btn-outline btn">Связаться</a>
                 </div>
             </section>
@@ -180,6 +116,10 @@
     </footer>
 
     <button class="back-to-top" onclick="scrollToTop()" title="Наверх">↑</button>
+
+    <script src="js/theme.js"></script>
+    <script src="js/progress-bar.js"></script>
+    <script src="js/statistics.js"></script>
 
     <script>
         // Минимальный JS для кнопки "наверх"
