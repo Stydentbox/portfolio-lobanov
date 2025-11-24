@@ -18,20 +18,33 @@ class GalleryManager {
     }
 
     loadImages() {
+        fetch('data/gallery-data.json')
+            .then(response => response.json())
+            .then(data => {
+                this.images = data.gallery || [];
+                this.renderGallery();
+            })
+            .catch(error => {
+                console.error('Ошибка загрузки галереи:', error);
+                this.loadFallbackImages();
+            });
+    }
+
+    loadFallbackImages() {
         this.images = [
-            { src: 'Images/Gallery/0C4A2320.jpg', name: 'Событие 2024' },
-            { src: 'Images/Gallery/IMG20240218130011.jpg', name: 'Проект с учениками' },
-            { src: 'Images/Gallery/IMG20241004093018.jpg', name: 'Олимпиада 2024' },
-            { src: 'Images/Gallery/IMG20241011120835.jpg', name: 'Конкурс по программированию' },
-            { src: 'Images/Gallery/IMG20241013170727.jpg', name: 'Работа с командой' },
-            { src: 'Images/Gallery/IMG20241223135830.jpg', name: 'Новогодний проект' },
-            { src: 'Images/Gallery/585096515_1145110854458818_142450807801969116_n.jpg', name: 'Социальная сеть' },
-            { src: 'Images/Gallery/IMG20250331095610.jpg', name: 'Весенний проект' },
-            { src: 'Images/Gallery/IMG20250607130107.jpg', name: 'Летние разработки' },
-            { src: 'Images/Gallery/IMG20250901082948.jpg', name: 'Осенний семинар' },
-            { src: 'Images/Gallery/IMG20251029103648.jpg', name: 'Октябрьское событие' },
-            { src: 'Images/Gallery/IMG20251105110219.jpg', name: 'Ноябрьская конференция' },
-            { src: 'Images/Gallery/TA-210.jpg', name: 'Техническое оборудование' }
+            { id: 1, src: 'Images/Gallery/0C4A2320.jpg', name: 'Событие 2024', description: 'Интерактивное мероприятие' },
+            { id: 2, src: 'Images/Gallery/IMG20240218130011.jpg', name: 'Проект с учениками', description: 'Совместная работа' },
+            { id: 3, src: 'Images/Gallery/IMG20241004093018.jpg', name: 'Олимпиада 2024', description: 'Республиканская олимпиада' },
+            { id: 4, src: 'Images/Gallery/IMG20241011120835.jpg', name: 'Конкурс по программированию', description: 'Марафон программирования' },
+            { id: 5, src: 'Images/Gallery/IMG20241013170727.jpg', name: 'Работа с командой', description: 'Проект ИИ' },
+            { id: 6, src: 'Images/Gallery/IMG20241223135830.jpg', name: 'Новогодний проект', description: 'Праздничный проект' },
+            { id: 7, src: 'Images/Gallery/585096515_1145110854458818_142450807801969116_n.jpg', name: 'Социальная сеть', description: 'Публикация' },
+            { id: 8, src: 'Images/Gallery/IMG20250331095610.jpg', name: 'Весенний проект', description: 'Веб-разработка' },
+            { id: 9, src: 'Images/Gallery/IMG20250607130107.jpg', name: 'Летние разработки', description: 'Мобильные приложения' },
+            { id: 10, src: 'Images/Gallery/IMG20250901082948.jpg', name: 'Осенний семинар', description: 'Машинное обучение' },
+            { id: 11, src: 'Images/Gallery/IMG20251029103648.jpg', name: 'Октябрьское событие', description: 'Конференция' },
+            { id: 12, src: 'Images/Gallery/IMG20251105110219.jpg', name: 'Ноябрьская конференция', description: 'Всероссийская конференция' },
+            { id: 13, src: 'Images/Gallery/TA-210.jpg', name: 'Техническое оборудование', description: 'Лабораторное оборудование' }
         ];
         this.renderGallery();
     }

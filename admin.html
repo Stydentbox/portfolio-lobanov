@@ -1,0 +1,68 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="Админ панель управления галереей">
+    <title>Админ-панель галереи - Портфолио</title>
+    <link rel="stylesheet" href="css/style.css">
+    <link rel="stylesheet" href="css/admin-gallery.css">
+</head>
+<body>
+    <button id="theme-toggle" class="theme-toggle" title="Кликните для переключения темы">☀️</button>
+
+    <main>
+        <div class="admin-container">
+            <div class="admin-header">
+                <h1>Управление галереей</h1>
+                <div class="admin-controls">
+                    <button class="btn-add" id="btn-add-image">+ Добавить фото</button>
+                    <button class="btn-export" id="btn-export">Экспортировать JSON</button>
+                </div>
+            </div>
+
+            <div id="message" class="message"></div>
+
+            <div id="gallery-list" class="gallery-list">
+                <!-- Изображения галереи будут загружены здесь -->
+            </div>
+        </div>
+    </main>
+
+    <!-- Модальное окно для добавления изображения -->
+    <div id="modal-add" class="modal-add">
+        <div class="modal-content-add">
+            <h2>Добавить новое изображение</h2>
+            <form id="add-image-form">
+                <div class="form-group">
+                    <label for="image-src">Путь к изображению (например: Images/Gallery/photo.jpg)</label>
+                    <input type="text" id="image-src" placeholder="Images/Gallery/photo.jpg" required>
+                </div>
+                <div class="form-group">
+                    <label for="image-name">Название</label>
+                    <input type="text" id="image-name" placeholder="Название фото" required>
+                </div>
+                <div class="form-group">
+                    <label for="image-description">Описание</label>
+                    <textarea id="image-description" placeholder="Описание события или проекта" rows="3"></textarea>
+                </div>
+                <div class="form-group">
+                    <label for="image-date">Дата (YYYY-MM)</label>
+                    <input type="text" id="image-date" placeholder="2025-01">
+                </div>
+                <div class="form-group">
+                    <label for="image-tags">Теги (через запятую)</label>
+                    <input type="text" id="image-tags" placeholder="тег1, тег2, тег3">
+                </div>
+                <div class="modal-buttons">
+                    <button type="button" class="btn-close" onclick="closeModal()">Отмена</button>
+                    <button type="submit" class="btn-submit">Добавить</button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <script src="js/theme.js"></script>
+    <script src="js/admin-gallery.js"></script>
+</body>
+</html>
