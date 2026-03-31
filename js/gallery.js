@@ -32,19 +32,18 @@ class GalleryManager {
 
     loadFallbackImages() {
         this.images = [
-            { id: 1, src: 'Images/Gallery/0C4A2320.jpg', name: 'Событие 2024', description: 'Интерактивное мероприятие' },
-            { id: 2, src: 'Images/Gallery/IMG20240218130011.jpg', name: 'Проект с учениками', description: 'Совместная работа' },
-            { id: 3, src: 'Images/Gallery/IMG20241004093018.jpg', name: 'Олимпиада 2024', description: 'Республиканская олимпиада' },
-            { id: 4, src: 'Images/Gallery/IMG20241011120835.jpg', name: 'Конкурс по программированию', description: 'Марафон программирования' },
+            { id: 1, src: 'Images/Gallery/0C4A2320.jpg', name: 'На встрече с Президентом Республики Молдова', description: 'На встрече с Президентом Республики Молдова' },
+            { id: 2, src: 'Images/Gallery/IMG20240218130011.jpg', name: 'MoldSEF 2024 - награждение', description: 'MoldSEF 2024' },
+            { id: 3, src: 'Images/Gallery/IMG20241004093018.jpg', name: 'С выпускниками 2024', description: 'Мы дружно вместе работали, в добрый путь, друзья!' },
+            { id: 4, src: 'Images/Gallery/IMG20241011120835.jpg', name: 'Победа на конкурсе STEAM проектов', description: 'Мы победили на конкурсе STEAM проектов!' },
             { id: 5, src: 'Images/Gallery/IMG20241013170727.jpg', name: 'Работа с командой', description: 'Проект ИИ' },
-            { id: 6, src: 'Images/Gallery/IMG20241223135830.jpg', name: 'Новогодний проект', description: 'Праздничный проект' },
-            { id: 7, src: 'Images/Gallery/585096515_1145110854458818_142450807801969116_n.jpg', name: 'Социальная сеть', description: 'Публикация' },
-            { id: 8, src: 'Images/Gallery/IMG20250331095610.jpg', name: 'Весенний проект', description: 'Веб-разработка' },
-            { id: 9, src: 'Images/Gallery/IMG20250607130107.jpg', name: 'Летние разработки', description: 'Мобильные приложения' },
-            { id: 10, src: 'Images/Gallery/IMG20250901082948.jpg', name: 'Осенний семинар', description: 'Машинное обучение' },
-            { id: 11, src: 'Images/Gallery/IMG20251029103648.jpg', name: 'Октябрьское событие', description: 'Конференция' },
-            { id: 12, src: 'Images/Gallery/IMG20251105110219.jpg', name: 'Ноябрьская конференция', description: 'Всероссийская конференция' },
-            { id: 13, src: 'Images/Gallery/TA-210.jpg', name: 'Техническое оборудование', description: 'Лабораторное оборудование' }
+            { id: 6, src: 'Images/Gallery/IMG20241223135830.jpg', name: 'В президентуре с ИИ проектом', description: 'Проект ИИ' },
+            { id: 8, src: 'Images/Gallery/IMG20250331095610.jpg', name: 'Победа на Олимпиаде по информатике 2025', description: 'Победа на Олимпиаде по информатике 2025' },
+            { id: 9, src: 'Images/Gallery/IMG20250607130107.jpg', name: 'Представляем ИИ проект', description: 'Представляем ИИ проект' },
+            { id: 10, src: 'Images/Gallery/IMG20250901082948.jpg', name: 'Начало нового учебного года', description: 'Начало нового учебного года 2025-2026' },
+            { id: 11, src: 'Images/Gallery/IMG20251029103648.jpg', name: 'С 7Б "едем" на мастер-класс по Веб-разработке', description: 'Конференция' },
+            { id: 12, src: 'Images/Gallery/IMG20251105110219.jpg', name: 'Даем интервью Радио Молдова', description: 'Даем интервью Радио Молдова' },
+            { id: 13, src: 'Images/Gallery/TA-210.jpg', name: 'Награждение победителей конкурса Intel AI Global Impact 2025', description: 'Intel AI Global Impact 2025' }
         ];
         this.renderGallery();
     }
@@ -54,18 +53,67 @@ class GalleryManager {
         this.images.forEach((image, index) => {
             const item = document.createElement('div');
             item.className = 'gallery-item';
-            item.innerHTML = `
-                <img src="${image.src}" alt="${image.name}" loading="lazy">
-                <div class="gallery-item-overlay">
-                    <div class="gallery-item-overlay-text">
-                        <div class="gallery-item-overlay-icon">🖼️</div>
-                        <div>${image.name}</div>
-                    </div>
+
+            // Создаем структуру с прогрессивной загрузкой
+            const imgElement = document.createElement('img');
+            imgElement.className = 'progressive-image loading';
+            imgElement.alt = image.name;
+            imgElement.dataset.src = image.src;
+
+            // Placeholder - серый фон с blur эффектом
+            imgElement.src = 'data:image/svg+xml,%3Csvg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 400 400"%3E%3Cfilter id="b"%3E%3CfeGaussianBlur stdDeviation="12"%3E%3C/feGaussianBlur%3E%3C/filter%3E%3Crect width="400" height="400" fill="%23ddd" filter="url(%23b)"%3E%3C/rect%3E%3C/svg%3E';
+
+            const overlay = document.createElement('div');
+            overlay.className = 'gallery-item-overlay';
+            overlay.innerHTML = `
+                <div class="gallery-item-overlay-text">
+                    <div class="gallery-item-overlay-icon">🖼️</div>
+                    <div>${image.name}</div>
                 </div>
             `;
+
+            item.appendChild(imgElement);
+            item.appendChild(overlay);
             item.addEventListener('click', () => this.openModal(index));
             this.galleryGrid.appendChild(item);
+
+            // Прогрессивная загрузка с Intersection Observer
+            this.loadProgressiveImage(imgElement);
         });
+    }
+
+    loadProgressiveImage(imgElement) {
+        const observer = new IntersectionObserver((entries, observer) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    const img = entry.target;
+                    const fullSrc = img.dataset.src;
+
+                    // Создаем новый Image объект для предзагрузки
+                    const fullImage = new Image();
+
+                    fullImage.onload = () => {
+                        // Когда полное изображение загружено, плавно заменяем
+                        img.src = fullSrc;
+                        img.classList.remove('loading');
+                        img.classList.add('loaded');
+                    };
+
+                    fullImage.onerror = () => {
+                        // В случае ошибки убираем класс loading
+                        img.classList.remove('loading');
+                        img.classList.add('error');
+                    };
+
+                    fullImage.src = fullSrc;
+                    observer.unobserve(img);
+                }
+            });
+        }, {
+            rootMargin: '50px' // Начинаем загрузку за 50px до появления в viewport
+        });
+
+        observer.observe(imgElement);
     }
 
     openModal(index) {
@@ -82,7 +130,26 @@ class GalleryManager {
 
     updateModal() {
         const image = this.images[this.currentIndex];
-        this.modalImage.src = image.src;
+
+        // Добавляем класс loading и показываем placeholder
+        this.modalImage.classList.add('loading');
+        this.modalImage.src = 'data:image/svg+xml,%3Csvg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 800 600"%3E%3Cfilter id="b"%3E%3CfeGaussianBlur stdDeviation="12"%3E%3C/feGaussianBlur%3E%3C/filter%3E%3Crect width="800" height="600" fill="%23ddd" filter="url(%23b)"%3E%3C/rect%3E%3C/svg%3E';
+
+        // Предзагрузка полного изображения
+        const fullImage = new Image();
+        fullImage.onload = () => {
+            this.modalImage.src = image.src;
+            this.modalImage.classList.remove('loading');
+            this.modalImage.classList.add('loaded');
+        };
+
+        fullImage.onerror = () => {
+            this.modalImage.classList.remove('loading');
+            this.modalImage.classList.add('error');
+        };
+
+        fullImage.src = image.src;
+
         this.modalImage.alt = image.name;
         this.modalTitle.textContent = image.name;
         this.modalCounter.textContent = `${this.currentIndex + 1} / ${this.images.length}`;

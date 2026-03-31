@@ -11,17 +11,24 @@ class AdminPanel {
     }
 
     init() {
-        this.loadData();
-        this.setupTabs();
-        this.setupGallery();
-        this.setupAchievements();
-        this.setupPublications();
-        this.setupEducation();
+        this.loadData().then(() => {
+            this.setupTabs();
+            this.setupGallery();
+            this.setupAchievements();
+            this.setupPublications();
+            this.setupEducation();
+        });
     }
 
-    // Загрузка данных из localStorage
-    loadData() {
-        this.galleryData = JSON.parse(localStorage.getItem('gallery') || '[]');
+    // Загрузка данных: для галереи — из JSON (источник правды), остальное — из localStorage
+    async loadData() {
+        try {
+            const response = await fetch('data/gallery-data.json');
+            const data = await response.json();
+            this.galleryData = data.gallery || [];
+        } catch (e) {
+            this.galleryData = JSON.parse(localStorage.getItem('gallery') || '[]');
+        }
         this.achievementsData = JSON.parse(localStorage.getItem('achievements') || '[]');
         this.publicationsData = JSON.parse(localStorage.getItem('publications') || '[]');
         this.educationData = JSON.parse(localStorage.getItem('education') || '[]');
@@ -313,14 +320,12 @@ class AdminPanel {
         const dataStr = JSON.stringify({ gallery: this.galleryData }, null, 2);
         const dataUri = 'data:application/json;charset=utf-8,'+ encodeURIComponent(dataStr);
 
-        const exportFileDefaultName = `gallery-data-${Date.now()}.json`;
-
         const linkElement = document.createElement('a');
         linkElement.setAttribute('href', dataUri);
-        linkElement.setAttribute('download', exportFileDefaultName);
+        linkElement.setAttribute('download', 'gallery-data.json');
         linkElement.click();
 
-        this.showMessage('Данные галереи экспортированы!', 'success');
+        this.showMessage('Скачайте файл и замените data/gallery-data.json в проекте', 'success');
     }
 
     importGallery() {
