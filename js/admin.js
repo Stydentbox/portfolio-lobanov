@@ -6,6 +6,7 @@ class AdminPanel {
         this.achievementsData = [];
         this.publicationsData = [];
         this.educationData = [];
+        this.hasUnsavedGallery = false;
 
         this.init();
     }
@@ -268,19 +269,42 @@ class AdminPanel {
         };
 
         this.galleryData.push(newItem);
-        this.saveData('gallery', this.galleryData);
+        this.markUnsaved();
         this.renderGallery();
 
-        this.showMessage('Фотография добавлена в галерею!', 'success');
+        this.showMessage('Фотография добавлена. Нажмите «Экспортировать JSON» для сохранения.', 'success');
     }
 
     deleteGalleryItem(id) {
         if (confirm('Удалить эту фотографию из галереи?')) {
             this.galleryData = this.galleryData.filter(item => item.id !== id);
-            this.saveData('gallery', this.galleryData);
+            this.markUnsaved();
             this.renderGallery();
-            this.showMessage('Фотография удалена', 'success');
+            this.showMessage('Удалено. Нажмите «Экспортировать JSON» чтобы сохранить изменения.', 'success');
         }
+    }
+
+    updateGalleryItem(id, btn) {
+        const card = btn.closest('.gallery-item-card');
+        const index = this.galleryData.findIndex(item => item.id === id);
+        if (index === -1) return;
+
+        this.galleryData[index] = {
+            ...this.galleryData[index],
+            name: card.querySelector('.edit-name').value.trim(),
+            description: card.querySelector('.edit-description').value.trim(),
+            date: card.querySelector('.edit-date').value.trim(),
+            tags: card.querySelector('.edit-tags').value.split(',').map(t => t.trim()).filter(t => t)
+        };
+
+        this.markUnsaved();
+        this.showMessage('Изменения сохранены в памяти. Нажмите «Экспортировать JSON» для записи в файл.', 'success');
+    }
+
+    markUnsaved() {
+        this.hasUnsavedGallery = true;
+        const btn = document.getElementById('export-gallery');
+        if (btn) btn.textContent = 'Экспортировать JSON ⚠️';
     }
 
     renderGallery() {
@@ -300,20 +324,35 @@ class AdminPanel {
             <div class="gallery-item-card">
                 <img src="${item.src}" alt="${item.name}" onerror="this.src='Images/favicon-32x32.png'">
                 <div class="gallery-item-info">
-                    <h4>${item.name}</h4>
-                    <p>${item.description || ''}</p>
-                    <p><small>${item.date || ''}</small></p>
-                    ${item.tags && item.tags.length > 0 ? `
-                        <div class="item-card-tags">
-                            ${item.tags.map(tag => `<span class="tag">${tag}</span>`).join('')}
+                    <div class="form-group">
+                        <label>Название</label>
+                        <input type="text" class="edit-name" value="${this._esc(item.name)}">
+                    </div>
+                    <div class="form-group">
+                        <label>Описание</label>
+                        <textarea class="edit-description" rows="2">${this._esc(item.description || '')}</textarea>
+                    </div>
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label>Дата (ГГГГ-ММ)</label>
+                            <input type="text" class="edit-date" value="${this._esc(item.date || '')}">
                         </div>
-                    ` : ''}
+                        <div class="form-group">
+                            <label>Теги</label>
+                            <input type="text" class="edit-tags" value="${this._esc((item.tags || []).join(', '))}">
+                        </div>
+                    </div>
                     <div class="gallery-item-actions">
+                        <button class="btn" onclick="adminPanel.updateGalleryItem(${item.id}, this)">Сохранить</button>
                         <button class="btn btn-delete" onclick="adminPanel.deleteGalleryItem(${item.id})">Удалить</button>
                     </div>
                 </div>
             </div>
         `).join('');
+    }
+
+    _esc(str) {
+        return String(str).replace(/"/g, '&quot;').replace(/</g, '&lt;').replace(/>/g, '&gt;');
     }
 
     exportGallery() {
@@ -325,7 +364,11 @@ class AdminPanel {
         linkElement.setAttribute('download', 'gallery-data.json');
         linkElement.click();
 
-        this.showMessage('Скачайте файл и замените data/gallery-data.json в проекте', 'success');
+        this.hasUnsavedGallery = false;
+        const btn = document.getElementById('export-gallery');
+        if (btn) btn.textContent = 'Экспортировать JSON';
+
+        this.showMessage('Скачайте файл и замените data/gallery-data.json в папке проекта', 'success');
     }
 
     importGallery() {
@@ -342,7 +385,7 @@ class AdminPanel {
                     const data = JSON.parse(event.target.result);
                     if (data.gallery && Array.isArray(data.gallery)) {
                         this.galleryData = data.gallery;
-                        this.saveData('gallery', this.galleryData);
+                        this.markUnsaved();
                         this.renderGallery();
                         this.showMessage('Данные галереи импортированы!', 'success');
                     } else {
@@ -676,4 +719,11 @@ class AdminPanel {
 let adminPanel;
 document.addEventListener('DOMContentLoaded', () => {
     adminPanel = new AdminPanel();
+});
+
+window.addEventListener('beforeunload', (e) => {
+    if (adminPanel && adminPanel.hasUnsavedGallery) {
+        e.preventDefault();
+        e.returnValue = '';
+    }
 });
