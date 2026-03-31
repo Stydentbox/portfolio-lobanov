@@ -1,0 +1,57 @@
+{
+  "gallery_example": {
+    "id": 1732659600000,
+    "src": "Images/Gallery/intel_ai_festival_2025.jpg",
+    "name": "Intel AI Global Impact Festival 2025",
+    "description": "Победа в мировом рейтинге конкурса Intel AI",
+    "date": "2025-01",
+    "tags": ["ИИ", "международный", "победа"]
+  },
+
+  "achievement_example": {
+    "id": 1732659600000,
+    "title": "Intel® AI Global Impact Festival",
+    "year": "2025",
+    "result": "1 место в мировом рейтинге",
+    "description": "Республика Молдова заняла первое место в мировом рейтинге конкурса Intel AI Global Impact Festival 2025, обойдя 109 команд из 33 стран.",
+    "level": "international",
+    "category": "ai",
+    "tags": ["ИИ", "международный", "победа"],
+    "image": "Images/intel_ai_festival_2025.jpg"
+  },
+
+  "publication_example": {
+    "id": 1732659600000,
+    "authors": "Лобанов А. Н.",
+    "title": "Информационные технологии в гибридном образовании",
+    "source": "Материалы VIII международной научно-практической конференции (24 ноября 2017 г.). – Кишинёв : Славянский университет, 2018",
+    "year": "2018",
+    "pages": "191 с.",
+    "type": "conference"
+  },
+
+  "education_example": {
+    "id": 1732659600000,
+    "institution": "Московский Физико-технический институт",
+    "program": "Машинное обучение и управление проектами в IT для преподавателей",
+    "startDate": "2020-06-10",
+    "endDate": "2020-08-24",
+    "hours": "72",
+    "city": "Москва",
+    "documentType": "certificate",
+    "description": "Специализированная подготовка преподавателей в области современных IT-технологий и методов управления проектами.",
+    "tags": ["Машинное обучение", "Управление проектами", "Для преподавателей"]
+  },
+
+  "instructions": {
+    "note": "Это примеры структуры данных для админ-панели",
+    "usage": "Используйте эти примеры как шаблон при заполнении форм",
+    "fields": {
+      "id": "Автоматически генерируется (timestamp)",
+      "level": "international | national | regional",
+      "category": "olympiad | competition | ai | programming | other",
+      "documentType": "certificate | diploma | other",
+      "type": "article | book | thesis | conference | other"
+    }
+  }
+}

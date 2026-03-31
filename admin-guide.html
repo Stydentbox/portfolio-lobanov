@@ -1,0 +1,367 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Руководство по админ-панели</title>
+    <link rel="stylesheet" href="css/style.css">
+    <style>
+        .guide-container {
+            max-width: 900px;
+            margin: 2rem auto;
+            padding: 2rem;
+        }
+
+        .guide-section {
+            background: var(--card-bg);
+            padding: 2rem;
+            margin-bottom: 2rem;
+            border-radius: 12px;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+        }
+
+        .guide-section h2 {
+            color: var(--accent-color);
+            margin-top: 0;
+            border-bottom: 2px solid var(--accent-color);
+            padding-bottom: 0.5rem;
+        }
+
+        .guide-section h3 {
+            color: var(--text-color);
+            margin-top: 1.5rem;
+        }
+
+        .step-list {
+            counter-reset: step-counter;
+            list-style: none;
+            padding-left: 0;
+        }
+
+        .step-list li {
+            counter-increment: step-counter;
+            margin-bottom: 1rem;
+            padding-left: 3rem;
+            position: relative;
+        }
+
+        .step-list li::before {
+            content: counter(step-counter);
+            position: absolute;
+            left: 0;
+            top: 0;
+            background: var(--accent-color);
+            color: white;
+            width: 2rem;
+            height: 2rem;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: bold;
+        }
+
+        .warning-box {
+            background: #fff3cd;
+            border-left: 4px solid #ffc107;
+            padding: 1rem;
+            margin: 1rem 0;
+            border-radius: 4px;
+            color: #856404;
+        }
+
+        .info-box {
+            background: #d1ecf1;
+            border-left: 4px solid #17a2b8;
+            padding: 1rem;
+            margin: 1rem 0;
+            border-radius: 4px;
+            color: #0c5460;
+        }
+
+        .success-box {
+            background: #d4edda;
+            border-left: 4px solid #28a745;
+            padding: 1rem;
+            margin: 1rem 0;
+            border-radius: 4px;
+            color: #155724;
+        }
+
+        code {
+            background: var(--bg-color);
+            padding: 0.25rem 0.5rem;
+            border-radius: 4px;
+            font-family: 'Courier New', monospace;
+            color: var(--accent-color);
+        }
+
+        .btn-group {
+            display: flex;
+            gap: 1rem;
+            margin-top: 2rem;
+            flex-wrap: wrap;
+        }
+
+        @media (prefers-color-scheme: dark) {
+            .warning-box {
+                background: rgba(255, 193, 7, 0.2);
+                color: #ffc107;
+            }
+
+            .info-box {
+                background: rgba(23, 162, 184, 0.2);
+                color: #17a2b8;
+            }
+
+            .success-box {
+                background: rgba(40, 167, 69, 0.2);
+                color: #28a745;
+            }
+        }
+    </style>
+</head>
+<body>
+    <button id="theme-toggle" class="theme-toggle" title="Кликните для переключения темы">☀️</button>
+
+    <header>
+        <div class="container">
+            <div class="header-content">
+                <a href="index.html" class="logo">
+                    <img src="Images/favicon-32x32.png" alt="Лобанов А.Н." class="logo-icon">
+                </a>
+                <h1>Руководство по использованию админ-панели</h1>
+            </div>
+        </div>
+    </header>
+
+    <main>
+        <div class="guide-container">
+
+            <!-- Введение -->
+            <div class="guide-section">
+                <h2>📖 Введение</h2>
+                <p>Админ-панель позволяет локально управлять всем контентом портфолио без редактирования HTML-кода. Вы можете добавлять фотографии, достижения, публикации и курсы повышения квалификации через удобный веб-интерфейс.</p>
+
+                <div class="warning-box">
+                    <strong>⚠️ Важно:</strong> Данные хранятся в localStorage браузера. Обязательно регулярно создавайте резервные копии через экспорт JSON!
+                </div>
+
+                <div class="btn-group">
+                    <a href="admin.html" class="btn">🚀 Открыть админ-панель</a>
+                    <a href="ADMIN_README.md" class="btn btn-outline" download>📥 Скачать полное руководство</a>
+                </div>
+            </div>
+
+            <!-- Галерея -->
+            <div class="guide-section">
+                <h2>📷 Управление галереей</h2>
+
+                <h3>Добавление фотографий методом Drag & Drop:</h3>
+                <ol class="step-list">
+                    <li>Откройте <a href="admin.html">админ-панель</a> и перейдите на вкладку "Галерея"</li>
+                    <li>Перетащите изображение в зону загрузки или кликните для выбора файла</li>
+                    <li>Система создаст путь вида <code>Images/Gallery/имя_файла.jpg</code></li>
+                    <li>Заполните информацию: название, описание, дату, теги</li>
+                    <li><strong>ВАЖНО:</strong> Вручную скопируйте файл в папку <code>Images/Gallery/</code></li>
+                    <li>Нажмите "Добавить в галерею"</li>
+                </ol>
+
+                <div class="info-box">
+                    <strong>💡 Совет:</strong> Используйте осмысленные имена файлов (например: <code>intel_ai_2025.jpg</code> вместо <code>IMG001.jpg</code>)
+                </div>
+
+                <h3>Экспорт данных галереи:</h3>
+                <ol class="step-list">
+                    <li>Нажмите кнопку "Экспортировать JSON"</li>
+                    <li>Сохраните файл как <code>gallery-data.json</code></li>
+                    <li>Скопируйте его в папку <code>data/</code> (заменив старый)</li>
+                    <li>Обновите <code>gallery.html</code> - новые фото появятся автоматически</li>
+                </ol>
+            </div>
+
+            <!-- Достижения -->
+            <div class="guide-section">
+                <h2>🏆 Управление достижениями</h2>
+
+                <ol class="step-list">
+                    <li>Перейдите на вкладку "Достижения"</li>
+                    <li>Нажмите "+ Добавить достижение"</li>
+                    <li>Заполните форму:
+                        <ul style="margin-top: 0.5rem;">
+                            <li>Название (например: Intel® AI Global Impact Festival)</li>
+                            <li>Год (2025)</li>
+                            <li>Результат (1 место в мировом рейтинге)</li>
+                            <li>Полное описание достижения</li>
+                            <li>Уровень (Международный/Республиканский/Региональный)</li>
+                            <li>Категория (Олимпиада/Конкурс/ИИ/Программирование)</li>
+                            <li>Теги через запятую</li>
+                            <li>Путь к изображению (если есть)</li>
+                        </ul>
+                    </li>
+                    <li>Нажмите "Сохранить достижение"</li>
+                </ol>
+
+                <div class="success-box">
+                    <strong>✅ Результат:</strong> Достижение сохранится в localStorage. Для добавления на сайт экспортируйте JSON.
+                </div>
+            </div>
+
+            <!-- Публикации -->
+            <div class="guide-section">
+                <h2>📚 Управление публикациями</h2>
+
+                <ol class="step-list">
+                    <li>Перейдите на вкладку "Публикации"</li>
+                    <li>Нажмите "+ Добавить публикацию"</li>
+                    <li>Заполните форму:
+                        <ul style="margin-top: 0.5rem;">
+                            <li>Авторы (Лобанов А. Н.)</li>
+                            <li>Название публикации</li>
+                            <li>Источник (конференция, журнал, издательство)</li>
+                            <li>Год публикации</li>
+                            <li>Страницы (если применимо)</li>
+                            <li>Тип публикации</li>
+                        </ul>
+                    </li>
+                    <li>Нажмите "Сохранить публикацию"</li>
+                </ol>
+
+                <div class="info-box">
+                    <strong>💡 Форматирование:</strong> Публикации автоматически сортируются по году (новые первыми).
+                </div>
+            </div>
+
+            <!-- Образование -->
+            <div class="guide-section">
+                <h2>🎓 Повышение квалификации</h2>
+
+                <ol class="step-list">
+                    <li>Перейдите на вкладку "Повышение квалификации"</li>
+                    <li>Нажмите "+ Добавить курс"</li>
+                    <li>Заполните подробную информацию:
+                        <ul style="margin-top: 0.5rem;">
+                            <li>Название учебного заведения</li>
+                            <li>Название программы обучения</li>
+                            <li>Даты начала и окончания (выбор из календаря)</li>
+                            <li>Количество часов</li>
+                            <li>Город</li>
+                            <li>Тип документа (Удостоверение/Диплом)</li>
+                            <li>Описание программы</li>
+                            <li>Теги/специализация</li>
+                        </ul>
+                    </li>
+                    <li>Нажмите "Сохранить курс"</li>
+                </ol>
+            </div>
+
+            <!-- Резервное копирование -->
+            <div class="guide-section">
+                <h2>💾 Резервное копирование данных</h2>
+
+                <div class="warning-box">
+                    <strong>⚠️ Критически важно:</strong> LocalStorage может быть очищен при удалении данных браузера, обновлении системы или при использовании режима инкогнито!
+                </div>
+
+                <h3>Рекомендуемый график:</h3>
+                <ul>
+                    <li><strong>Еженедельно:</strong> Экспортируйте все JSON-файлы</li>
+                    <li><strong>После каждого крупного обновления:</strong> Создавайте резервную копию</li>
+                    <li><strong>Храните копии:</strong> В нескольких местах (компьютер, облако, внешний диск)</li>
+                </ul>
+
+                <h3>Процесс экспорта:</h3>
+                <ol class="step-list">
+                    <li>Откройте каждую вкладку в админ-панели</li>
+                    <li>Нажмите "Экспортировать JSON" на вкладке Галерея</li>
+                    <li>Повторите для остальных разделов (когда функция будет добавлена)</li>
+                    <li>Сохраните файлы в безопасном месте с датой: <code>gallery-2025-11-26.json</code></li>
+                </ol>
+
+                <h3>Восстановление данных:</h3>
+                <ol class="step-list">
+                    <li>Нажмите "Импортировать JSON"</li>
+                    <li>Выберите сохраненный файл</li>
+                    <li>Данные будут восстановлены в localStorage</li>
+                </ol>
+            </div>
+
+            <!-- Решение проблем -->
+            <div class="guide-section">
+                <h2>🔧 Решение типичных проблем</h2>
+
+                <h3>Изображения не отображаются</h3>
+                <ul>
+                    <li>Проверьте, что файл скопирован в <code>Images/Gallery/</code></li>
+                    <li>Убедитесь, что путь в JSON совпадает с реальным</li>
+                    <li>Проверьте расширение файла (должно быть .jpg, .png или .gif)</li>
+                </ul>
+
+                <h3>Данные не сохраняются</h3>
+                <ul>
+                    <li>Проверьте, что localStorage включен в браузере</li>
+                    <li>Не используйте режим инкогнито</li>
+                    <li>Очистите кэш и попробуйте снова</li>
+                    <li>Проверьте консоль браузера (F12) на ошибки</li>
+                </ul>
+
+                <h3>Пропали все данные</h3>
+                <ul>
+                    <li>Восстановите из резервной копии JSON</li>
+                    <li>Если копий нет - данные утеряны безвозвратно</li>
+                    <li><strong>Урок:</strong> Всегда делайте резервные копии!</li>
+                </ul>
+
+                <h3>Drag & Drop не работает</h3>
+                <ul>
+                    <li>Используйте современный браузер (Chrome, Firefox, Edge)</li>
+                    <li>Проверьте, что файл является изображением</li>
+                    <li>Убедитесь, что размер не превышает 5 МБ</li>
+                    <li>Попробуйте кликнуть и выбрать файл вместо перетаскивания</li>
+                </ul>
+            </div>
+
+            <!-- Лучшие практики -->
+            <div class="guide-section">
+                <h2>⭐ Лучшие практики</h2>
+
+                <div class="success-box">
+                    <strong>Следуйте этим рекомендациям для эффективной работы:</strong>
+                </div>
+
+                <ul>
+                    <li><strong>Организация файлов:</strong> Используйте понятные имена файлов и структурируйте папки</li>
+                    <li><strong>Регулярность:</strong> Обновляйте контент регулярно, не накапливайте изменения</li>
+                    <li><strong>Резервирование:</strong> Экспортируйте JSON минимум раз в неделю</li>
+                    <li><strong>Тестирование:</strong> После добавления контента проверьте его отображение</li>
+                    <li><strong>Качество изображений:</strong> Оптимизируйте размер (не более 1-2 МБ)</li>
+                    <li><strong>Заполнение полей:</strong> Заполняйте максимум информации для лучшего SEO</li>
+                    <li><strong>Теги:</strong> Используйте релевантные теги для удобного поиска</li>
+                    <li><strong>Консистентность:</strong> Придерживайтесь единого стиля описаний</li>
+                </ul>
+            </div>
+
+            <!-- Кнопки действий -->
+            <div class="guide-section">
+                <h2>🚀 Начать работу</h2>
+                <div class="btn-group">
+                    <a href="admin.html" class="btn">Открыть админ-панель</a>
+                    <a href="gallery.html" class="btn btn-outline">Просмотреть галерею</a>
+                    <a href="index.html" class="btn btn-outline">На главную</a>
+                </div>
+            </div>
+
+        </div>
+    </main>
+
+    <footer>
+        <div class="container">
+            <div class="footer-content">
+                <p>&copy; 2025 Лобанов Альберт Николаевич</p>
+            </div>
+        </div>
+    </footer>
+
+    <script src="js/theme.js"></script>
+</body>
+</html>

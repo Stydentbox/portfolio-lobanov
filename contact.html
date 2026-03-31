@@ -15,6 +15,8 @@
     <link rel="stylesheet" href="css/style.css">
 </head>
 <body>
+    <button id="theme-toggle" class="theme-toggle" title="Кликните для переключения темы">☀️</button>
+
     <header>
         <div class="container">
             <div class="header-content">
@@ -27,6 +29,7 @@
                         <li><a href="achievements.html">Достижения</a></li>
                         <li><a href="education.html">Образование</a></li>
                         <li><a href="publications.html">Публикации</a></li>
+                        <li><a href="gallery.html">Галерея</a></li>
                         <li><a href="contact.html" class="active">Контакты</a></li>
                     </ul>
                 </nav>
@@ -316,5 +319,42 @@
             }
         }
     </style>
+
+    <script src="js/theme.js"></script>
+    <script src="js/progress-bar.js"></script>
+
+    <script>
+        // Активная ссылка в навигации
+        document.addEventListener('DOMContentLoaded', function() {
+            const currentPage = window.location.pathname.split('/').pop() || 'index.html';
+            const navLinks = document.querySelectorAll('nav a');
+
+            navLinks.forEach(link => {
+                link.classList.remove('active');
+                if (link.getAttribute('href') === currentPage) {
+                    link.classList.add('active');
+                }
+            });
+        });
+
+        // Кнопка наверх
+        window.addEventListener('scroll', function() {
+            const backToTop = document.querySelector('.back-to-top');
+            if (backToTop) {
+                if (window.pageYOffset > 300) {
+                    backToTop.classList.add('visible');
+                } else {
+                    backToTop.classList.remove('visible');
+                }
+            }
+        });
+
+        function scrollToTop() {
+            window.scrollTo({
+                top: 0,
+                behavior: 'smooth'
+            });
+        }
+    </script>
 </body>
 </html>

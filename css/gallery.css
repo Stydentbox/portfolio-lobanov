@@ -42,7 +42,60 @@
     height: 100%;
     object-fit: cover;
     display: block;
-    transition: transform 0.3s ease;
+    transition: transform 0.3s ease, filter 0.5s ease, opacity 0.5s ease;
+}
+
+/* Прогрессивная загрузка изображений */
+.progressive-image {
+    background-color: var(--surface-color);
+    position: relative;
+}
+
+.progressive-image.loading {
+    filter: blur(10px);
+    opacity: 0.6;
+}
+
+.progressive-image.loaded {
+    filter: blur(0);
+    opacity: 1;
+}
+
+.progressive-image.error {
+    filter: blur(0);
+    opacity: 0.3;
+}
+
+/* Индикатор загрузки */
+.gallery-item {
+    position: relative;
+}
+
+.gallery-item::before {
+    content: '';
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    width: 40px;
+    height: 40px;
+    margin: -20px 0 0 -20px;
+    border: 3px solid rgba(74, 144, 226, 0.3);
+    border-top-color: var(--accent-color);
+    border-radius: 50%;
+    animation: spin 0.8s linear infinite;
+    opacity: 0;
+    pointer-events: none;
+    z-index: 10;
+    transition: opacity 0.3s ease;
+}
+
+.gallery-item:has(.progressive-image.loading)::before {
+    opacity: 1;
+}
+
+@keyframes spin {
+    0% { transform: rotate(0deg); }
+    100% { transform: rotate(360deg); }
 }
 
 .gallery-item:hover img {
@@ -138,6 +191,47 @@
     object-fit: contain;
     border-radius: 4px;
     box-shadow: 0 10px 40px rgba(0, 0, 0, 0.5);
+    transition: filter 0.5s ease, opacity 0.5s ease;
+    background-color: rgba(255, 255, 255, 0.05);
+}
+
+/* Прогрессивная загрузка в модальном окне */
+.modal-image.loading {
+    filter: blur(20px);
+    opacity: 0.5;
+}
+
+.modal-image.loaded {
+    filter: blur(0);
+    opacity: 1;
+}
+
+.modal-image.error {
+    filter: blur(0);
+    opacity: 0.3;
+}
+
+/* Индикатор загрузки для модального окна */
+.modal-content::after {
+    content: '';
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    width: 60px;
+    height: 60px;
+    margin: -30px 0 0 -30px;
+    border: 4px solid rgba(74, 144, 226, 0.3);
+    border-top-color: var(--accent-color);
+    border-radius: 50%;
+    animation: spin 0.8s linear infinite;
+    opacity: 0;
+    pointer-events: none;
+    z-index: 1002;
+    transition: opacity 0.3s ease;
+}
+
+.modal-content:has(.modal-image.loading)::after {
+    opacity: 1;
 }
 
 /* Кнопки управления модалью */
