@@ -3,66 +3,339 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta name="description" content="Админ панель управления галереей">
-    <title>Админ-панель галереи - Портфолио</title>
+    <meta name="description" content="Админ панель управления контентом портфолио">
+    <title>Админ-панель - Портфолио</title>
     <link rel="stylesheet" href="css/style.css">
-    <link rel="stylesheet" href="css/admin-gallery.css">
+    <link rel="stylesheet" href="css/admin.css">
 </head>
 <body>
     <button id="theme-toggle" class="theme-toggle" title="Кликните для переключения темы">☀️</button>
 
+    <header>
+        <div class="container">
+            <div class="header-content">
+                <a href="index.html" class="logo">
+                    <img src="Images/favicon-32x32.png" alt="Лобанов А.Н." class="logo-icon">
+                </a>
+                <h1>Панель управления контентом</h1>
+            </div>
+        </div>
+    </header>
+
     <main>
-        <div class="admin-container">
-            <div class="admin-header">
-                <h1>Управление галереей</h1>
-                <div class="admin-controls">
-                    <button class="btn-add" id="btn-add-image">+ Добавить фото</button>
-                    <button class="btn-export" id="btn-export">Экспортировать JSON</button>
+        <div class="container">
+            <!-- Вкладки навигации -->
+            <div class="admin-tabs">
+                <button class="tab-btn active" data-tab="gallery">📷 Галерея</button>
+                <button class="tab-btn" data-tab="achievements">🏆 Достижения</button>
+                <button class="tab-btn" data-tab="publications">📚 Публикации</button>
+                <button class="tab-btn" data-tab="education">🎓 Повышение квалификации</button>
+            </div>
+
+            <!-- Сообщения -->
+            <div id="message" class="message"></div>
+
+            <!-- ВКЛАДКА: ГАЛЕРЕЯ -->
+            <div class="tab-content active" id="tab-gallery">
+                <div class="section-header">
+                    <h2>Управление галереей</h2>
+                    <div class="section-actions">
+                        <button class="btn" id="export-gallery">Экспортировать JSON</button>
+                        <button class="btn" id="import-gallery">Импортировать JSON</button>
+                    </div>
+                </div>
+
+                <!-- Drag and Drop зона для фотографий -->
+                <div class="dropzone" id="gallery-dropzone">
+                    <div class="dropzone-content">
+                        <div class="dropzone-icon">📁</div>
+                        <p>Перетащите изображения сюда или кликните для выбора</p>
+                        <p class="dropzone-hint">Поддерживаются: JPG, PNG, GIF (до 15 МБ) — автоматически оптимизируется до 1 МБ</p>
+                    </div>
+                    <input type="file" id="gallery-file-input" accept="image/*" multiple hidden>
+                </div>
+
+                <!-- Индикатор прогресса загрузки -->
+                <div class="upload-progress" id="upload-progress" style="display: none;">
+                    <div class="upload-progress-header">
+                        <span id="upload-filename">Загрузка файла...</span>
+                        <span id="upload-size">0 / 0 МБ</span>
+                    </div>
+                    <div class="progress-bar">
+                        <div class="progress-bar-fill" id="progress-bar-fill"></div>
+                    </div>
+                    <div class="upload-progress-footer">
+                        <span id="upload-percentage">0%</span>
+                    </div>
+                </div>
+
+                <!-- Форма добавления данных для изображения -->
+                <div class="form-card" id="gallery-form-card" style="display: none;">
+                    <h3>Добавить информацию о фотографии</h3>
+                    <form id="gallery-form">
+                        <div class="form-group">
+                            <label>Название</label>
+                            <input type="text" name="name" required placeholder="Название события">
+                        </div>
+                        <div class="form-group">
+                            <label>Описание</label>
+                            <textarea name="description" rows="3" placeholder="Краткое описание"></textarea>
+                        </div>
+                        <div class="form-row">
+                            <div class="form-group">
+                                <label>Дата (ГГГГ-ММ)</label>
+                                <input type="text" name="date" placeholder="2025-01">
+                            </div>
+                            <div class="form-group">
+                                <label>Теги (через запятую)</label>
+                                <input type="text" name="tags" placeholder="событие, проект">
+                            </div>
+                        </div>
+                        <input type="hidden" name="src" id="gallery-src">
+                        <div class="form-actions">
+                            <button type="button" class="btn-outline" id="cancel-gallery">Отмена</button>
+                            <button type="submit" class="btn">Добавить в галерею</button>
+                        </div>
+                    </form>
+                </div>
+
+                <!-- Список изображений в галерее -->
+                <div class="items-grid" id="gallery-items">
+                    <!-- Будет заполнено через JS -->
                 </div>
             </div>
 
-            <div id="message" class="message"></div>
+            <!-- ВКЛАДКА: ДОСТИЖЕНИЯ -->
+            <div class="tab-content" id="tab-achievements">
+                <div class="section-header">
+                    <h2>Управление достижениями</h2>
+                    <button class="btn" id="add-achievement">+ Добавить достижение</button>
+                </div>
 
-            <div id="gallery-list" class="gallery-list">
-                <!-- Изображения галереи будут загружены здесь -->
+                <!-- Форма добавления достижения -->
+                <div class="form-card" id="achievement-form-card" style="display: none;">
+                    <h3>Новое достижение</h3>
+                    <form id="achievement-form">
+                        <div class="form-group">
+                            <label>Название достижения</label>
+                            <input type="text" name="title" required placeholder="Например: Intel® AI Global Impact Festival">
+                        </div>
+                        <div class="form-group">
+                            <label>Год</label>
+                            <input type="number" name="year" required placeholder="2025" min="1990" max="2100">
+                        </div>
+                        <div class="form-group">
+                            <label>Результат</label>
+                            <input type="text" name="result" required placeholder="1 место в мировом рейтинге">
+                        </div>
+                        <div class="form-group">
+                            <label>Описание</label>
+                            <textarea name="description" rows="4" required placeholder="Подробное описание достижения"></textarea>
+                        </div>
+                        <div class="form-row">
+                            <div class="form-group">
+                                <label>Уровень</label>
+                                <select name="level" required>
+                                    <option value="">Выберите уровень</option>
+                                    <option value="international">Международный</option>
+                                    <option value="national">Республиканский</option>
+                                    <option value="regional">Региональный</option>
+                                </select>
+                            </div>
+                            <div class="form-group">
+                                <label>Категория</label>
+                                <select name="category" required>
+                                    <option value="">Выберите категорию</option>
+                                    <option value="olympiad">Олимпиада</option>
+                                    <option value="competition">Конкурс</option>
+                                    <option value="ai">Искусственный интеллект</option>
+                                    <option value="programming">Программирование</option>
+                                    <option value="other">Другое</option>
+                                </select>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label>Теги (через запятую)</label>
+                            <input type="text" name="tags" placeholder="ИИ, международный, победа">
+                        </div>
+                        <div class="form-group">
+                            <label>Путь к изображению (опционально)</label>
+                            <input type="text" name="image" placeholder="Images/achievements/photo.jpg">
+                        </div>
+                        <div class="form-actions">
+                            <button type="button" class="btn-outline" id="cancel-achievement">Отмена</button>
+                            <button type="submit" class="btn">Сохранить достижение</button>
+                        </div>
+                    </form>
+                </div>
+
+                <!-- Список достижений -->
+                <div class="items-list" id="achievements-items">
+                    <!-- Будет заполнено через JS -->
+                </div>
+            </div>
+
+            <!-- ВКЛАДКА: ПУБЛИКАЦИИ -->
+            <div class="tab-content" id="tab-publications">
+                <div class="section-header">
+                    <h2>Управление публикациями</h2>
+                    <button class="btn" id="add-publication">+ Добавить публикацию</button>
+                </div>
+
+                <!-- Форма добавления публикации -->
+                <div class="form-card" id="publication-form-card" style="display: none;">
+                    <h3>Новая публикация</h3>
+                    <form id="publication-form">
+                        <div class="form-group">
+                            <label>Авторы</label>
+                            <input type="text" name="authors" required placeholder="Лобанов А. Н.">
+                        </div>
+                        <div class="form-group">
+                            <label>Название публикации</label>
+                            <input type="text" name="title" required placeholder="Название статьи или книги">
+                        </div>
+                        <div class="form-group">
+                            <label>Источник публикации</label>
+                            <textarea name="source" rows="2" required placeholder="Название конференции, журнала, издательства"></textarea>
+                        </div>
+                        <div class="form-row">
+                            <div class="form-group">
+                                <label>Год публикации</label>
+                                <input type="number" name="year" required placeholder="2025" min="1990" max="2100">
+                            </div>
+                            <div class="form-group">
+                                <label>Страницы (опционально)</label>
+                                <input type="text" name="pages" placeholder="С. 123-145">
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label>Тип публикации</label>
+                            <select name="type">
+                                <option value="article">Статья</option>
+                                <option value="book">Книга</option>
+                                <option value="thesis">Диссертация</option>
+                                <option value="conference">Материалы конференции</option>
+                                <option value="other">Другое</option>
+                            </select>
+                        </div>
+                        <div class="form-actions">
+                            <button type="button" class="btn-outline" id="cancel-publication">Отмена</button>
+                            <button type="submit" class="btn">Сохранить публикацию</button>
+                        </div>
+                    </form>
+                </div>
+
+                <!-- Список публикаций -->
+                <div class="items-list" id="publications-items">
+                    <!-- Будет заполнено через JS -->
+                </div>
+            </div>
+
+            <!-- ВКЛАДКА: ПОВЫШЕНИЕ КВАЛИФИКАЦИИ -->
+            <div class="tab-content" id="tab-education">
+                <div class="section-header">
+                    <h2>Управление повышением квалификации</h2>
+                    <button class="btn" id="add-education">+ Добавить курс</button>
+                </div>
+
+                <!-- Форма добавления курса -->
+                <div class="form-card" id="education-form-card" style="display: none;">
+                    <h3>Новый курс повышения квалификации</h3>
+                    <form id="education-form">
+                        <div class="form-group">
+                            <label>Название учебного заведения</label>
+                            <input type="text" name="institution" required placeholder="Московский Физико-технический институт">
+                        </div>
+                        <div class="form-group">
+                            <label>Название программы</label>
+                            <input type="text" name="program" required placeholder="Машинное обучение и управление проектами в IT">
+                        </div>
+                        <div class="form-row">
+                            <div class="form-group">
+                                <label>Дата начала</label>
+                                <input type="date" name="startDate" required>
+                            </div>
+                            <div class="form-group">
+                                <label>Дата окончания</label>
+                                <input type="date" name="endDate" required>
+                            </div>
+                        </div>
+                        <div class="form-row">
+                            <div class="form-group">
+                                <label>Количество часов</label>
+                                <input type="number" name="hours" required placeholder="72">
+                            </div>
+                            <div class="form-group">
+                                <label>Город</label>
+                                <input type="text" name="city" placeholder="Москва">
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label>Тип документа</label>
+                            <select name="documentType">
+                                <option value="certificate">Удостоверение о повышении квалификации</option>
+                                <option value="diploma">Диплом о проф. переподготовке</option>
+                                <option value="other">Другое</option>
+                            </select>
+                        </div>
+                        <div class="form-group">
+                            <label>Описание (опционально)</label>
+                            <textarea name="description" rows="3" placeholder="Краткое описание программы"></textarea>
+                        </div>
+                        <div class="form-group">
+                            <label>Теги/специализация (через запятую)</label>
+                            <input type="text" name="tags" placeholder="Машинное обучение, Управление проектами">
+                        </div>
+                        <div class="form-actions">
+                            <button type="button" class="btn-outline" id="cancel-education">Отмена</button>
+                            <button type="submit" class="btn">Сохранить курс</button>
+                        </div>
+                    </form>
+                </div>
+
+                <!-- Список курсов -->
+                <div class="items-list" id="education-items">
+                    <!-- Будет заполнено через JS -->
+                </div>
+            </div>
+
+            <!-- Инструкции -->
+            <div class="instructions-card">
+                <h3>📖 Инструкции по использованию</h3>
+                <div class="instructions-content">
+                    <div class="instruction-item">
+                        <strong>Галерея:</strong> Перетащите изображения в зону загрузки или кликните для выбора. Изображение автоматически оптимизируется до&nbsp;1&nbsp;МБ (масштабирование до 1920px + сжатие JPEG).
+                        <br><strong>⚠️ Важно:</strong> Скачайте оптимизированный файл по появившейся кнопке и сохраните его в папку <code>Images/Gallery/</code>, затем заполните информацию и нажмите «Добавить в галерею».
+                    </div>
+                    <div class="instruction-item">
+                        <strong>Достижения, Публикации, Курсы:</strong> Нажмите кнопку "Добавить" и заполните форму. Данные сохраняются в localStorage браузера и отображаются на соответствующих страницах.
+                    </div>
+                    <div class="instruction-item">
+                        <strong>Экспорт данных:</strong> Используйте кнопку "Экспортировать JSON" для сохранения резервной копии данных в файл.
+                    </div>
+                    <div class="instruction-item">
+                        <strong>Импорт данных:</strong> Используйте кнопку "Импортировать JSON" для восстановления данных из ранее экспортированного файла.
+                    </div>
+                    <div class="instruction-item">
+                        <strong>⚠️ Важно:</strong> Данные хранятся локально в браузере (localStorage). Регулярно экспортируйте JSON-файлы для резервного копирования. При очистке кэша браузера данные могут быть удалены.
+                    </div>
+                    <div class="instruction-item">
+                        <strong>💡 Совет:</strong> После добавления фотографий обновите страницу галереи, чтобы увидеть изменения.
+                    </div>
+                </div>
             </div>
         </div>
     </main>
 
-    <!-- Модальное окно для добавления изображения -->
-    <div id="modal-add" class="modal-add">
-        <div class="modal-content-add">
-            <h2>Добавить новое изображение</h2>
-            <form id="add-image-form">
-                <div class="form-group">
-                    <label for="image-src">Путь к изображению (например: Images/Gallery/photo.jpg)</label>
-                    <input type="text" id="image-src" placeholder="Images/Gallery/photo.jpg" required>
-                </div>
-                <div class="form-group">
-                    <label for="image-name">Название</label>
-                    <input type="text" id="image-name" placeholder="Название фото" required>
-                </div>
-                <div class="form-group">
-                    <label for="image-description">Описание</label>
-                    <textarea id="image-description" placeholder="Описание события или проекта" rows="3"></textarea>
-                </div>
-                <div class="form-group">
-                    <label for="image-date">Дата (YYYY-MM)</label>
-                    <input type="text" id="image-date" placeholder="2025-01">
-                </div>
-                <div class="form-group">
-                    <label for="image-tags">Теги (через запятую)</label>
-                    <input type="text" id="image-tags" placeholder="тег1, тег2, тег3">
-                </div>
-                <div class="modal-buttons">
-                    <button type="button" class="btn-close" onclick="closeModal()">Отмена</button>
-                    <button type="submit" class="btn-submit">Добавить</button>
-                </div>
-            </form>
+    <footer>
+        <div class="container">
+            <div class="footer-content">
+                <p>&copy; 2025 Лобанов Альберт Николаевич</p>
+            </div>
         </div>
-    </div>
+    </footer>
 
     <script src="js/theme.js"></script>
-    <script src="js/admin-gallery.js"></script>
+    <script src="js/admin.js"></script>
 </body>
 </html>

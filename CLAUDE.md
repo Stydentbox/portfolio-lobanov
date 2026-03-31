@@ -2,78 +2,57 @@
 
 This file provides guidance to Claude Code (claude.ai/code) when working with code in this repository.
 
-## Project Overview
+## Project
 
-Ты — опытный веб-разработчик. Создай полностью статический сайт-портфолио без использования JavaScript-фреймворков.
+Static portfolio site for Lobanov Albert Nikolaevich, computer science teacher. No build system — pure HTML/CSS/JS files opened directly in a browser or served via any static file server (e.g. GitHub Pages).
 
-1) Технологии и структура
+**To preview locally:** open any `.html` file in a browser, or run `python -m http.server 8000` from the project root.
 
-HTML5 для страниц.
+## File Structure
 
-CSS3 (Flexbox/Grid, медиа-запросы, тёмная/светлая тема через prefers-color-scheme).
+```
+Portfolio/
+├── index.html, achievements.html, education.html,
+│   publications.html, gallery.html, contact.html   # Public pages
+├── admin.html, admin-guide.html                     # Admin/content management (not linked from nav)
+├── css/
+│   ├── style.css          # Global styles (all public pages)
+│   ├── gallery.css        # Gallery page specifics
+│   ├── admin.css          # Admin panel styles
+│   └── admin-gallery.css  # Admin gallery management styles
+├── js/
+│   ├── theme.js           # Dark/light toggle (used on every page)
+│   ├── gallery.js         # Gallery rendering from JSON
+│   ├── filters.js         # Publication/achievement filtering
+│   ├── stats-counter.js   # Animated counters on index
+│   ├── statistics.js      # Stats calculations
+│   ├── progress-bar.js    # Scroll progress bar
+│   ├── admin.js           # Admin panel CRUD for JSON data
+│   └── admin-gallery.js   # Gallery image management in admin
+├── data/
+│   ├── gallery-data.json        # Gallery images metadata
+│   ├── achievements-data.json   # Student achievements
+│   ├── publications-data.json   # Publications list
+│   └── education-data.json      # Education/qualifications
+└── Images/
+    ├── Lobanov_AN.png     # Profile photo
+    ├── favicon*           # Favicon set + site.webmanifest
+    └── Gallery/           # Gallery photos
+```
 
-Images/ для фотографий, иконок, сканов сертификатов.
+## Architecture
 
-Без JavaScript (только если нужен для переключения языка или мелкой анимации — минимальный inline JS).
+**Theme system:** Dark theme is default. `theme.js` reads/writes `localStorage('theme')` and sets `data-theme` attribute on `<html>`. Light theme CSS variables are defined under `[data-theme="light"]` in `style.css`. Every page must include `<button id="theme-toggle">` and load `theme.js`.
 
-Структура папок:
+**Data-driven pages:** Gallery, achievements, publications, and education pages load content from `data/*.json` files via `fetch()` in their respective JS files. The admin panel (`admin.html` + `admin.js`) edits these JSON files and saves them back. This is a client-side-only admin — changes only persist if the JSON files are actually written (works locally; on GitHub Pages, the admin is read-only).
 
-/pages
-   index.html            # главная
-   achievements.html     # достижения
-   education.html        # образование
-   publications.html     # публикации
-   contact.html          # контакты
-/css
-   style.css
-/images
-   ... (фото, логотипы, иконки)
-/ (корень)
-   README.md
+**CSS conventions:** All CSS custom properties (variables) are defined in `:root` in `style.css`. Font is Times New Roman (ГОСТ academic style). Container max-width is 900px. The `.card` class is the main content block.
 
-2) Страницы
+**Navigation:** Every public page has the same `<header>` with the same nav links. Add `class="active"` to the current page's nav link. The admin page is intentionally excluded from the nav.
 
-index.html (Главная)
-Имя, роль, краткое описание, карточки педагогических подходов.
+## Design Constraints
 
-achievements.html (Достижения учеников)
-Список побед (олимпиады, конкурсы), можно оформить в виде таймлайна.
-
-education.html (Образование и повышение квалификации)
-Две колонки: слева даты, справа учебные заведения и программы.
-
-publications.html (Публикации)
-Список по ГОСТ, с разделением по годам.
-
-contact.html (Контакты)
-Контактная информация (email, ссылки на соцсети).
-
-3) Дизайн
-
-Минималистичный, академичный стиль.
-
-Цветовая схема: светлая/тёмная (через prefers-color-scheme).
-
-Сетку делать на CSS Grid / Flexbox.
-
-Чёткая типографика (заголовки, списки, ссылки).
-
-4) Навигация
-
-Единое меню (header) на всех страницах.
-
-Footer с копирайтом и ссылкой на портфолио сертификатов Stepik.
-
-5) Контент
-
-Используй данные, которые я предоставил ранее:
-
-Главная → педагогические подходы и философия.
-
-Achievements → достижения учеников (олимпиады, конкурсы, Intel AI).
-
-Education → образование и повышение квалификации (с часами и датами).
-
-Publications → список публикаций (по ГОСТ).
-
-Contacts → email, соцсети, место работы.
+- Academic ГОСТ style — Times New Roman font, minimal decoration, dark background `#1a1a1a`
+- Keep JavaScript minimal; new interactive features should be added to `js/` as separate files
+- Publications must follow ГОСТ citation format
+- All text content is in Russian
