@@ -2,7 +2,7 @@
 class ProgressBar {
     constructor() {
         this.progressBar = document.querySelector('.progress-bar');
-        if (\!this.progressBar) {
+        if (!this.progressBar) {
             this.createProgressBar();
         }
         this.init();

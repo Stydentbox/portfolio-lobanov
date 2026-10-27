@@ -10,7 +10,7 @@ class StatisticsCounter {
 
         const observer = new IntersectionObserver((entries) => {
             entries.forEach(entry => {
-                if (entry.isIntersecting && \!entry.target.classList.contains('animated')) {
+                if (entry.isIntersecting && !entry.target.classList.contains('animated')) {
                     this.animateCounter(entry.target);
                     entry.target.classList.add('animated');
                 }
