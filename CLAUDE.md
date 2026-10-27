@@ -14,7 +14,7 @@ Static portfolio site for Lobanov Albert Nikolaevich, computer science teacher. 
 Portfolio/
 ├── index.html, achievements.html, education.html,
 │   publications.html, gallery.html, contact.html   # Public pages
-├── admin.html, admin-guide.html                     # Admin/content management (not linked from nav)
+├── admin.html, admin-guide.html                     # Admin/content management — local only, excluded from GitHub Pages in _config.yml
 ├── css/
 │   ├── style.css          # Global styles (all public pages)
 │   ├── gallery.css        # Gallery page specifics

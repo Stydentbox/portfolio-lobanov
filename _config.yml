@@ -1,0 +1,13 @@
+# GitHub Pages (Jekyll). Админка и служебные заметки на сайт не публикуются:
+# admin.html работает только локально (данные в localStorage → экспорт JSON → коммит).
+exclude:
+  - admin.html
+  - admin-guide.html
+  - js/admin.js
+  - ADMIN_README.md
+  - CHANGELOG_ADMIN.md
+  - GALLERY_ADMIN_GUIDE.md
+  - LOGOS_SETUP_GUIDE.md
+  - QUICK_START.txt
+  - CLAUDE.md
+  - .claude
