@@ -102,15 +102,41 @@ header {
   text-decoration: none;
 }
 
-.logo-icon {
+/* Медальон-монограмма в шапке */
+.header-brand-badge {
+  justify-content: center;
   width: 40px;
   height: 40px;
+  flex-shrink: 0;
   border-radius: 50%;
-  border: 2px solid var(--border-color);
-  transition: border-color 0.2s ease;
+  background-color: #262626;
+  color: #f8fafc;
+  border: 2px solid #404040;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.4);
+  transition: transform 0.2s ease, border-color 0.2s ease;
 }
 
-.logo:hover .logo-icon {
+.header-brand-badge:hover {
+  color: #f8fafc;
+  transform: scale(1.05);
+  border-color: var(--accent-color);
+}
+
+.header-brand-initials {
+  font-family: var(--font-family);
+  font-size: 17px;
+  font-weight: bold;
+  letter-spacing: 0.5px;
+  line-height: 1;
+}
+
+[data-theme="light"] .header-brand-badge {
+  background-color: #1e293b;
+  border-color: #cbd5e1;
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.12);
+}
+
+[data-theme="light"] .header-brand-badge:hover {
   border-color: var(--accent-color);
 }
 
@@ -167,7 +193,9 @@ main {
   aspect-ratio: 3/4;
   border-radius: 50%;
   overflow: hidden;
-  box-shadow: var(--shadow);
+  border: 2px solid #2d3748;
+  box-shadow: 0 12px 32px rgba(0, 0, 0, 0.6);
+  transition: box-shadow 0.3s ease, border-color 0.3s ease;
 }
 
 .profile-photo {
@@ -175,6 +203,27 @@ main {
   height: 100%;
   object-fit: cover;
   display: block;
+  filter: brightness(0.95) contrast(1.05);
+  transition: filter 0.3s ease;
+}
+
+/* Светлая тема: чёткое паспарту вместо размытой тени */
+[data-theme="light"] .profile-photo-container {
+  border: 4px solid #ffffff;
+  outline: 1px solid #cbd5e1;
+  box-shadow: inset 0 0 12px rgba(0, 0, 0, 0.08), 0 4px 10px rgba(0, 0, 0, 0.04);
+}
+
+[data-theme="light"] .profile-photo {
+  filter: contrast(1.04) brightness(1.02);
+}
+
+[data-theme="light"] .profile-photo-container::after {
+  background: radial-gradient(ellipse 60% 80% at center,
+    transparent 55%,
+    rgba(0, 0, 0, 0.05) 75%,
+    rgba(0, 0, 0, 0.15) 90%,
+    rgba(0, 0, 0, 0.25) 100%);
 }
 
 .profile-photo-container::after {
@@ -542,9 +591,35 @@ footer {
   h1 {
     font-size: 2rem;
   }
-  
+
   h2 {
     font-size: 1.5rem;
+  }
+
+  /* Мобильный порядок: ФИО → фото → описание */
+  .intro-layout {
+    grid-template-columns: 1fr;
+    gap: 1rem;
+  }
+
+  .intro-content {
+    display: contents;
+  }
+
+  .intro-content h1 {
+    order: 1;
+  }
+
+  .intro-image {
+    order: 2;
+  }
+
+  .intro-content .card {
+    order: 3;
+  }
+
+  .profile-photo-container {
+    max-width: 240px;
   }
 }
 
@@ -567,15 +642,8 @@ footer {
     right: 1rem;
   }
 
-  .intro-layout {
-    grid-template-columns: 1fr;
-    gap: 1rem;
-    text-align: center;
-  }
-
   .profile-photo-container {
     max-width: 200px;
-    aspect-ratio: 3/4;
   }
 }
 

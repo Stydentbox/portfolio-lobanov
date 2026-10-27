@@ -1,0 +1,6 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64">
+  <rect width="64" height="64" rx="14" fill="#1e293b"/>
+  <rect x="2" y="2" width="60" height="60" rx="12" fill="none" stroke="#475569" stroke-width="2"/>
+  <line x1="18" y1="50" x2="46" y2="50" stroke="#3b82f6" stroke-width="3" stroke-linecap="round"/>
+  <text x="32" y="41" font-family="Georgia, 'Times New Roman', serif" font-size="28" font-weight="bold" fill="#f8fafc" text-anchor="middle" letter-spacing="1">АЛ</text>
+</svg>
