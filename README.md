@@ -10,7 +10,7 @@ Portfolio/
 ├── achievements.html       # Достижения учеников  
 ├── education.html         # Образование и квалификация
 ├── publications.html      # Научные публикации
-├── contact.html          # Контакты и форма связи
+├── contact.html          # Контакты
 ├── css/
 │   └── style.css         # Единый стиль с темной темой
 ├── Images/
