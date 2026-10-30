@@ -4,7 +4,7 @@ This file provides guidance to Claude Code (claude.ai/code) when working with co
 
 ## Project
 
-Static portfolio site for Lobanov Albert Nikolaevich, computer science teacher. No build system — pure HTML/CSS/JS files opened directly in a browser or served via any static file server (e.g. GitHub Pages).
+Static portfolio site for Lobanov Albert Nikolaevich, computer science teacher. No build system — pure HTML/CSS/JS files opened directly in a browser or served via any static file server. Published on GitHub Pages: https://stydentbox.github.io/portfolio-lobanov/ (deploys automatically from `main`).
 
 **To preview locally:** open any `.html` file in a browser, or run `python -m http.server 8000` from the project root.
 
@@ -13,8 +13,13 @@ Static portfolio site for Lobanov Albert Nikolaevich, computer science teacher. 
 ```
 Portfolio/
 ├── index.html, achievements.html, education.html,
-│   publications.html, gallery.html, contact.html   # Public pages
+│   publications.html, evidence.html, gallery.html,
+│   contact.html                                     # Public pages
 ├── admin.html, admin-guide.html                     # Admin/content management — local only, excluded from GitHub Pages in _config.yml
+├── _config.yml            # GitHub Pages (Jekyll) excludes: admin pages, admin docs, CLAUDE.md, .claude
+├── README.md, ADMIN_README.md, CHANGELOG_ADMIN.md,
+│   GALLERY_ADMIN_GUIDE.md, LOGOS_SETUP_GUIDE.md,
+│   QUICK_START.txt        # Docs (Russian); all but README.md are excluded from Pages
 ├── css/
 │   ├── style.css          # Global styles (all public pages)
 │   ├── gallery.css        # Gallery page specifics
@@ -22,33 +27,42 @@ Portfolio/
 │   └── admin-gallery.css  # Admin gallery management styles
 ├── js/
 │   ├── theme.js           # Dark/light toggle (used on every page)
-│   ├── gallery.js         # Gallery rendering from JSON
-│   ├── filters.js         # Publication/achievement filtering
-│   ├── stats-counter.js   # Animated counters on index
-│   ├── statistics.js      # Stats calculations
-│   ├── progress-bar.js    # Scroll progress bar
-│   ├── admin.js           # Admin panel CRUD for JSON data
+│   ├── progress-bar.js    # Scroll progress bar (all public pages)
+│   ├── achievements.js    # Renders data/achievements-data.json on achievements.html
+│   ├── stats-counter.js   # Animated counters on achievements.html
+│   ├── statistics.js      # Animated counters on index.html
+│   ├── filters.js         # Search/filter on publications.html
+│   ├── gallery.js         # Gallery rendering from data/gallery-data.json
+│   ├── admin.js           # Admin panel (localStorage + JSON export)
 │   └── admin-gallery.js   # Gallery image management in admin
 ├── data/
 │   ├── gallery-data.json        # Gallery images metadata
 │   ├── achievements-data.json   # Student achievements
-│   ├── publications-data.json   # Publications list
-│   └── education-data.json      # Education/qualifications
+│   ├── publications-data.json   # Publications (admin data; publications.html is static)
+│   ├── education-data.json      # Courses (admin data; education.html is static)
+│   └── EXAMPLES.json            # Sample records for each data type
 └── Images/
-    ├── Lobanov_AN.png     # Profile photo
-    ├── favicon*           # Favicon set + site.webmanifest
+    ├── Lobanov_AN.png     # Profile photo (index.html)
+    ├── favicon.svg        # Main favicon — «АЛ» monogram
+    ├── favicon.ico, favicon-*.png, apple-touch-icon.png,
+    │   android-chrome-*.png, site.webmanifest  # Raster fallbacks / PWA icons
+    ├── Logos/             # University logos for education.html
     └── Gallery/           # Gallery photos
 ```
 
 ## Architecture
 
-**Theme system:** Dark theme is default. `theme.js` reads/writes `localStorage('theme')` and sets `data-theme` attribute on `<html>`. Light theme CSS variables are defined under `[data-theme="light"]` in `style.css`. Every page must include `<button id="theme-toggle">` and load `theme.js`.
+**Theme system:** Dark theme is default. `theme.js` reads/writes `localStorage('theme')` and sets `data-theme` attribute on `<html>`. Base styles in `style.css` are the dark theme; light theme overrides (variables and component tweaks) go under `[data-theme="light"]`. There is no `[data-theme="dark"]` selector. Every page must include `<button id="theme-toggle">` and load `theme.js`.
 
-**Data-driven pages:** Gallery, achievements, publications, and education pages load content from `data/*.json` files via `fetch()` in their respective JS files. The admin panel (`admin.html` + `admin.js`) edits these JSON files and saves them back. This is a client-side-only admin — changes only persist if the JSON files are actually written (works locally; on GitHub Pages, the admin is read-only).
+**Content sources:** `gallery.html` and the dynamic part of `achievements.html` load `data/*.json` via `fetch()`. `achievements.html` also has a static timeline in HTML; `education.html`, `publications.html` and `evidence.html` are static HTML — edit the page itself to change content.
 
-**CSS conventions:** All CSS custom properties (variables) are defined in `:root` in `style.css`. Font is Times New Roman (ГОСТ academic style). Container max-width is 900px. The `.card` class is the main content block.
+**Admin:** `admin.html` + `admin.js` keep data in browser `localStorage` (gallery is read from `data/gallery-data.json`). To publish changes: export JSON from the admin, replace the file in `data/`, commit. Admin pages are not deployed to GitHub Pages.
 
-**Navigation:** Every public page has the same `<header>` with the same nav links. Add `class="active"` to the current page's nav link. The admin page is intentionally excluded from the nav.
+**CSS conventions:** All CSS custom properties (variables) are defined in `:root` in `style.css`. Font is Times New Roman (ГОСТ academic style). Container max-width is 900px. The `.card` class is the main content block. Breakpoints: 768px and 480px.
+
+**Navigation / header:** Every page has the same `<header>`: an «АЛ» monogram badge (`a.logo.header-brand-badge` > `span.header-brand-initials`, linking to `index.html`, or `#` on index/gallery) and the same nav links (Главная, Достижения, Образование, Публикации, Источники, Галерея, Контакты). Add `class="active"` to the current page's nav link. Admin pages are intentionally excluded from the nav. Every page `<head>` links `Images/favicon.svg` with `Images/favicon.ico` as fallback.
+
+**Index intro:** `.intro-layout` is a two-column grid (text + `.profile-photo-container`). At ≤768px it becomes one column with `.intro-content { display: contents }` and `order` so the mobile order is: name (h1) → photo → description card.
 
 ## Design Constraints
 
